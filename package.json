@@ -1,0 +1,29 @@
+{
+  "name": "tftcentral-bot",
+  "version": "1.0.0",
+  "description": "TFTCentral's custom bot",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pepyta/tftcentral-bot.git"
+  },
+  "keywords": [
+    "nodejs",
+    "discord.js"
+  ],
+  "author": "Gál Péter (pepyta)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pepyta/tftcentral-bot/issues"
+  },
+  "homepage": "https://github.com/pepyta/tftcentral-bot#readme",
+  "dependencies": {
+    "discord.js": "^11.5.1",
+    "express": "^4.17.1",
+    "request": "^2.88.0"
+  }
+}
