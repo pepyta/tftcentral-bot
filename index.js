@@ -25,4 +25,14 @@ setInterval(() => {
     client.channels.get("642884636539879443").setName(`Discord users: ${client.channels.get("642884636539879443").guild.memberCount}`)
 }, 10000)
 
+client.on('ready', () => {
+    client.user.setStatus('available')
+    client.user.setPresence({
+        game: {
+            name: 'with Teamfight Tactics',
+            type: "PLAYING"
+        }
+    });
+});
+
 client.login('NjQyODc5NjgyMDM5MTE5ODky.XcdWxw.fzbPTUp954d9B5eQ2Kw1lGqV0LQ');
