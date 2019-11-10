@@ -2,7 +2,6 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 const express = require('express');
 
-const request = require('request');
 const app = express();
 
 client.on('ready', () => {
@@ -17,10 +16,14 @@ app.listen(8080)
 
 // Get server status every 10 seconds
 setInterval(() => {
-    var url = "https://www.instagram.com/tftcentral/?__a=1";
-    request.get(url, function (err, response, body) {
-        client.channels.get("642886967100440591").setName(`Instagram followers: ${JSON.parse(response.body)['graphql']['user']['edge_followed_by']['count']}`)
-    })
+    getJSON('https://www.instagram.com/tftcentral/?__a=1',
+        function (err, data) {
+            if (err !== null) {
+                alert('Something went wrong: ' + err);
+            } else {
+                client.channels.get("642886967100440591").setName(`Instagram followers: ${JSON.parse(data)['graphql']['user']['edge_followed_by']['count']}`)
+            }
+        });
 
     client.channels.get("642884636539879443").setName(`Discord users: ${client.channels.get("642884636539879443").guild.memberCount}`)
 }, 10000)
@@ -36,3 +39,19 @@ client.on('ready', () => {
 });
 
 client.login(process.env.TOKEN);
+
+
+var getJSON = function (url, callback) {
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', url, true);
+    xhr.responseType = 'json';
+    xhr.onload = function () {
+        var status = xhr.status;
+        if (status === 200) {
+            callback(null, xhr.response);
+        } else {
+            callback(status, xhr.response);
+        }
+    };
+    xhr.send();
+};
