@@ -17,9 +17,9 @@ app.listen(8080)
 
 // Get server status every 10 seconds
 setInterval(() => {
-    var url = "https://www.instagram.com/tftcentral";
+    var url = "https://www.instagram.com/tftcentral/?__a=1";
     request.get(url, function (err, response, body) {
-        client.channels.get("642886967100440591").setName(`Instagram followers: ${response.body.split("meta property=\"og:description\" content=\"")[1].split("Followers")[0]}`)
+        client.channels.get("642886967100440591").setName(`Instagram followers: ${JSON.parse(response.body)['graphql']['user']['edge_followed_by']['count']}`)
     })
 
     client.channels.get("642884636539879443").setName(`Discord users: ${client.channels.get("642884636539879443").guild.memberCount}`)
