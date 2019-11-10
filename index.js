@@ -1,9 +1,26 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
 const express = require('express');
-const {XMLHttpRequest} = require("xmlhttprequest")
+const { XMLHttpRequest } = require("xmlhttprequest")
 const app = express();
+let Instagram = require('instagram-nodejs-without-api');
+Instagram = new Instagram()
 
+
+Instagram.getCsrfToken().then((csrf) => {
+    Instagram.csrfToken = csrf;
+}).then(() => {
+    return Instagram.auth(process.env.INSTAGRAM_USERNAME, process.env.INSTAGRAM_PASSWORD).then(sessionId => {
+        Instagram.sessionId = sessionId
+
+        return Instagram.getUserDataByUsername('tftcentral').then((t) => {
+            return Instagram.getUserFollowers(t.graphql.user.id).then((t) => {
+                console.log(t); // - instagram followers for user "username-for-get"
+            })
+        })
+
+    })
+}).catch(console.error);
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`)
 })
