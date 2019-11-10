@@ -24,6 +24,6 @@
   "dependencies": {
     "discord.js": "^11.5.1",
     "express": "^4.17.1",
-    "instagram-followers": "^1.0.0"
+    "instagram-nodejs-without-api": "^1.2.0"
   }
 }
