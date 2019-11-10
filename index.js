@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
 const express = require('express');
-
+const {XMLHttpRequest} = require("xmlhttprequest")
 const app = express();
 
 client.on('ready', () => {
