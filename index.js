@@ -95,24 +95,24 @@ client.on('message', function (msg) {
                 message += `- ${legends[legend.legendId].emoji} **${legends[legend.legendId].name}**: ${stars}\n`
             })
             message += `\n\nReact with the correct emoji to select it!`
-            
+
             msg.author.send(message, function (msg) {
                 inv.forEach(function (legend) {
                     msg.react(legend.emoji)
-                    console.log("Reacted with: "+legend.emoji)
+                    console.log("Reacted with: " + legend.emoji)
                 })
 
                 msg.awaitReactions(true, { max: 1, time: 60000, errors: ['time'] })
-                .then(collected => {
-                    const reaction = collected.first();
-                    console.log(reaction.emoji.name)
-                    msg.delete()
-                    msg.author.send("Success")
-                })
-                .catch(collected => {
-                    console.log(`After a minute, only ${collected.size} out of 4 reacted.`);
-                    message.reply('you didn\'t react with neither a thumbs up, nor a thumbs down.');
-                });
+                    .then(collected => {
+                        const reaction = collected.first();
+                        console.log(reaction.emoji.name)
+                        msg.delete()
+                        msg.author.send("Success")
+                    })
+                    .catch(collected => {
+                        console.log(`After a minute, only ${collected.size} out of 4 reacted.`);
+                        message.reply('you didn\'t react with neither a thumbs up, nor a thumbs down.');
+                    });
             })
         }
     }
@@ -128,23 +128,24 @@ client.on('ready', () => {
     });
 });
 
-client.on('message', function(msg){
-    /*
-    Instagram.getCsrfToken().then((csrf) => {
-        Instagram.csrfToken = csrf;
-    }).then(() => {
-        return Instagram.auth(process.env.INSTAGRAM_USERNAME, process.env.INSTAGRAM_PASSWORD).then(sessionId => {
-            Instagram.sessionId = sessionId
+function httpGetAsync(theUrl, callback) {
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.onreadystatechange = function () {
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+            callback(xmlHttp.responseText);
+    }
+    xmlHttp.open("GET", theUrl, true); // true for asynchronous
+    xmlHttp.send(null);
+}
 
-            return Instagram.getUserDataByUsername('tftcentral').then((t) => {
-                var followers = t['graphql']['user']['edge_followed_by']['count']
-                client.channels.get("642886967100440591").setName(`Instagram followers: ${(followers / 1000 + "").split(".")[0] + ((followers / 1000 + "").split(".")[1].substring(0, 1) > 0 ? "." + (followers / 1000 + "").split(".")[1].substring(0, 1) : "")}k`)
-                console.log(`${(followers / 1000 + "").split(".")[0] + ((followers / 1000 + "").split(".")[1].substring(0, 1) > 0 ? "." + (followers / 1000 + "").split(".")[1].substring(0, 1) : "")}k`)
-            })
+client.on('message', function (msg) {
+    httpGetAsync("https://instagram.com/tftcentral", function (msg) {
+        var data = JSON.parse(msg.split("window._sharedData")[1].split(";")[0])
 
-        })
-    }).catch(console.error);
-    */
+    })
+    var followers = data['graphql']['user']['edge_followed_by']['count']
+    client.channels.get("642886967100440591").setName(`Instagram followers: ${(followers / 1000 + "").split(".")[0] + ((followers / 1000 + "").split(".")[1].substring(0, 1) > 0 ? "." + (followers / 1000 + "").split(".")[1].substring(0, 1) : "")}k`)
+    console.log(`${(followers / 1000 + "").split(".")[0] + ((followers / 1000 + "").split(".")[1].substring(0, 1) > 0 ? "." + (followers / 1000 + "").split(".")[1].substring(0, 1) : "")}k`)
     client.channels.get("642884636539879443").setName(`Discord users: ${client.channels.get("642884636539879443").guild.memberCount}`)
 })
 
