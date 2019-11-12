@@ -99,6 +99,7 @@ client.on('message', function (msg) {
             msg.author.send(message, function (msg) {
                 inv.forEach(function (legend) {
                     msg.react(legend.emoji)
+                    console.log("Reacted with: "+legend.emoji)
                 })
 
                 msg.awaitReactions(true, { max: 1, time: 60000, errors: ['time'] })
