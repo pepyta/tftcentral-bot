@@ -94,25 +94,25 @@ client.on('message', function (msg) {
                 }
                 message += `- ${legends[legend.legendId].emoji} **${legends[legend.legendId].name}**: ${stars}\n`
             })
-            message += `\n\nReact with the correct emoji`
+            message += `\n\nReact with the correct emoji to select it!`
             
             msg.author.send(message, function (msg) {
                 inv.forEach(function (legend) {
                     msg.react(legend.emoji)
-
-                    msg.awaitReactions(true, { max: 1, time: 60000, errors: ['time'] })
-                        .then(collected => {
-                            const reaction = collected.first();
-
-                            console.log(reaction.emoji.name)
-                        })
-                        .catch(collected => {
-                            console.log(`After a minute, only ${collected.size} out of 4 reacted.`);
-                            message.reply('you didn\'t react with neither a thumbs up, nor a thumbs down.');
-                        });
                 })
+
+                msg.awaitReactions(true, { max: 1, time: 60000, errors: ['time'] })
+                .then(collected => {
+                    const reaction = collected.first();
+                    console.log(reaction.emoji.name)
+                    msg.delete()
+                    msg.author.send("Success")
+                })
+                .catch(collected => {
+                    console.log(`After a minute, only ${collected.size} out of 4 reacted.`);
+                    message.reply('you didn\'t react with neither a thumbs up, nor a thumbs down.');
+                });
             })
-            msg.author.send(`\nReact with the correct emoji to use it!`)
         }
     }
 })
