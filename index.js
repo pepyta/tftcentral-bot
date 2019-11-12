@@ -5,6 +5,11 @@ Instagram = new Instagram()
 const express = require('express');
 const app = express();
 
+const inventory = require('data-store')({ path: process.cwd() + '/inventory.json' })
+const defaults = require('data-store')({ path: process.cwd() + '/defaults.json' })
+const messageCounter = require('data-store')({ path: process.cwd() + '/messageCounter.json' })
+const legends = require('./legends')
+
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`)
 })
@@ -13,6 +18,73 @@ app.get("/", (request, response) => {
     response.sendStatus(200)
 })
 app.listen(8080)
+
+
+client.on('message', function(msg){
+    if(msg.author.id !== 230740886273654786) return
+    var value = messageCounter.get(msg.author.id, undefined)
+    if(value){
+        value--
+        if(value == 0){
+            var legendId = Math.random()*legends.length
+            msg.author.send(`Congratulations! You've just got a new Little Legend!\n\nThe eggs content is: **${legends[legendId].name}**`)
+            addLittleLegend(legendId, msg.author)
+            msg.author.send(inventory.get(msg.author.id))
+            value = 6   
+        }
+        messageCounter.set(msg.author.id, value)
+    } else {
+        messageCounter.set(msg.author.id, 5)
+    }
+    msg.author.send(inventory.get(msg.author.id))
+    msg.author.send(defaults.get(msg.author.id))
+    msg.author.send(messageCounter.get(msg.author.id))
+})
+
+function addLittleLegend(legendId, author){
+    var inv = inventory.get(msg.author.id, [])
+    /*
+    elem: {
+        legendId: 5,
+        level: [1-3]    
+    }
+    */
+    var has = false
+    inv.forEach(function(elem){
+        if(elem.legendId == legendId){
+            has = true
+        }
+    })
+
+    if(has){
+        inv.forEach(function(elem){
+            if(elem.legendId == legendId){
+                elem.level++
+            }
+        })
+    } else {
+        inv.push({
+            legendId: legendId,
+            level: 1
+        })
+    }
+    
+    if(!defaults.get(author.id, undefined)){
+        defaults.set(author.id, legendId)
+    }
+
+    inventory.set(author.id, inv)
+}
+
+client.on('ready', () => {
+    client.user.setStatus('available')
+    client.user.setPresence({
+        game: {
+            name: 'with Teamfight Tactics',
+            type: "PLAYING"
+        }
+    });
+});
 
 setInterval(() => {
     Instagram.getCsrfToken().then((csrf) => {
@@ -31,15 +103,5 @@ setInterval(() => {
     }).catch(console.error);
     client.channels.get("642884636539879443").setName(`Discord users: ${client.channels.get("642884636539879443").guild.memberCount}`)
 }, 10000)
-
-client.on('ready', () => {
-    client.user.setStatus('available')
-    client.user.setPresence({
-        game: {
-            name: 'with Teamfight Tactics',
-            type: "PLAYING"
-        }
-    });
-});
 
 client.login(process.env.TOKEN);
