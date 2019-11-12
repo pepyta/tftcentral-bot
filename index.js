@@ -97,7 +97,7 @@ client.on('message', function (msg) {
             })
             message += `\n\nReact with the correct emoji to select it!`
 
-            msg.author.send(message, function (msg) {
+            msg.author.send(message).then(function(msg){
                 inv.forEach(function (legend) {
                     msg.react(legend.emoji)
                     console.log("Reacted with: " + legend.emoji)
