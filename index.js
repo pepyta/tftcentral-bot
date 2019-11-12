@@ -5,9 +5,9 @@ Instagram = new Instagram()
 const express = require('express');
 const app = express();
 
-const inventory = require('data-store')({ path: process.cwd() + '/inventory.json' })
-const defaults = require('data-store')({ path: process.cwd() + '/defaults.json' })
-const messageCounter = require('data-store')({ path: process.cwd() + '/messageCounter.json' })
+const inventory = require('data-store')({ path: 'inventory.json' })
+const defaults = require('data-store')({ path: 'defaults.json' })
+const messageCounter = require('data-store')({ 'messageCounter.json' })
 const legends = require('./legends')
 
 client.on('ready', () => {
