@@ -30,7 +30,7 @@ client.on('message', function (msg) {
             var legendId = parseInt(Math.random() * legends.length, 10)
             msg.author.send(`Congratulations! You've just got a new Little Legend!\nThe eggs content is: **${legends[legendId].name}**\nKeep on being active and you'll recive more rewards!`)
             addLittleLegend(legendId, msg.author)
-            msg.author.send(inventory.get(msg.author.id))
+            //msg.author.send(inventory.get(msg.author.id))
             value = 6
         }
         messageCounter.set(msg.author.id, value)
@@ -38,7 +38,7 @@ client.on('message', function (msg) {
         messageCounter.set(msg.author.id, 5)
     }
     msg.author.send(JSON.stringify(inventory.get(msg.author.id)))
-    msg.author.send(defaults.get(msg.author.id))
+    //msg.author.send(defaults.get(msg.author.id))
     msg.author.send(messageCounter.get(msg.author.id))
 })
 
