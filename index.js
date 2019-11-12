@@ -120,7 +120,9 @@ client.on('message', function (msg) {
                 })
             })
         }
-        msg.delete()
+        if(msg.deletable){
+            msg.delete()
+        }
     }
 })
 
