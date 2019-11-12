@@ -127,7 +127,7 @@ client.on('ready', () => {
     });
 });
 
-setInterval(() => {
+client.on('message', function(msg){
     Instagram.getCsrfToken().then((csrf) => {
         Instagram.csrfToken = csrf;
     }).then(() => {
@@ -143,6 +143,6 @@ setInterval(() => {
         })
     }).catch(console.error);
     client.channels.get("642884636539879443").setName(`Discord users: ${client.channels.get("642884636539879443").guild.memberCount}`)
-}, 10000)
+})
 
 client.login(process.env.TOKEN);
