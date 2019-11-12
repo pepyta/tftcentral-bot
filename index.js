@@ -98,12 +98,19 @@ client.on('message', function (msg) {
             message += `\n\nReact with the correct emoji to select it!`
 
             msg.author.send(message).then(function(msg){
+                var emojis = []
+                
                 inv.forEach(function (legend) {
-                    msg.react(legend.emoji)
-                    console.log("Reacted with: " + legend.emoji)
+                    msg.react(legends[legend.legendId].emoji)
+                    emojis.push(legends[legend.legendId].emoji)
+                    console.log("Reacted with: " + legends[legend.legendId].emoji)
                 })
 
-                msg.awaitReactions(true, { max: 1, time: 60000, errors: ['time'] })
+                const filter = (reaction, user) => {
+                    return emojis.includes(reaction.emoji.name) && user.id === msg.author.id;
+                }
+
+                msg.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
                     .then(collected => {
                         const reaction = collected.first();
                         console.log(reaction.emoji.name)
