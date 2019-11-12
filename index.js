@@ -4,6 +4,7 @@ let Instagram = require('instagram-nodejs-without-api');
 Instagram = new Instagram()
 const express = require('express');
 const app = express();
+const {XMLHttpRequest} = require('xmlhttprequest')
 
 const inventory = require('data-store')({ path: 'inventory.json' })
 const defaults = require('data-store')({ path: 'defaults.json' })
