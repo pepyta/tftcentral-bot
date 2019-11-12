@@ -93,7 +93,7 @@ client.on('message', function (msg) {
                 for (var i = 0; i < legend.level; i++) {
                     stars += '⭐'
                 }
-                message += `- ${legends[legend.legendId].emoji} **${legends[legend.legendId].name}**: ${stars}\n`
+                message += `- ${legends[legend.legendId].emoji} **${legends[legend.legendId].name}**: ${stars} ${legend.legendId == defaults.get(msg.author.id, 0) ? "**(selected)**" : ""}\n`
             })
             message += `\n\nReact with the correct emoji to select it!`
 
