@@ -21,7 +21,7 @@ app.listen(8080)
 
 
 client.on('message', function (msg) {
-    if (msg.author.id !== 230740886273654786) return
+    if (msg.author.id != 230740886273654786) return
     var value = messageCounter.get(msg.author.id, undefined)
     if (value) {
         value--
