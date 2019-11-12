@@ -4,7 +4,7 @@ let Instagram = require('instagram-nodejs-without-api');
 Instagram = new Instagram()
 const express = require('express');
 const app = express();
-const {XMLHttpRequest} = require('xmlhttprequest')
+const { XMLHttpRequest } = require('xmlhttprequest')
 
 const inventory = require('data-store')({ path: 'inventory.json' })
 const defaults = require('data-store')({ path: 'defaults.json' })
@@ -99,27 +99,28 @@ client.on('message', function (msg) {
 
             const userId = msg.author.id
 
-            msg.author.send(message).then(function(msg){
+            msg.author.send(message).then(function (msg) {
                 var emojis = []
-                
+
                 inv.forEach(function (legend) {
                     msg.react(legends[legend.legendId].emoji)
                     emojis.push(legends[legend.legendId].emoji)
                     console.log("Reacted with: " + legends[legend.legendId].emoji)
                 })
-                
-                client.on('messageReactionAdd', function(messageReaction, user){
-                    if(messageReaction.message.author.id != user.id){
-                        inv.forEach(function(legend){
-                            if(legends[legend.legendId].emoji == messageReaction.emoji.name){
+
+                client.on('messageReactionAdd', function (messageReaction, user) {
+                    if (messageReaction.message.author.id != user.id) {
+                        inv.forEach(function (legend) {
+                            if (legends[legend.legendId].emoji == messageReaction.emoji.name) {
                                 setDefault(userId, legend.legendId)
                             }
                         })
-                        msg.delete()    
+                        msg.delete()
                     }
                 })
             })
         }
+        msg.delete()
     }
 })
 
@@ -145,10 +146,9 @@ function httpGetAsync(theUrl, callback) {
 
 client.on('message', function (msg) {
     httpGetAsync("https://instagram.com/tftcentral", function (msg) {
-        var data = JSON.parse(msg.split("window._sharedData")[1].split(";")[0])
+        var data = JSON.parse(msg.split("window._sharedData")[1].split(";")[0].replace(" = ", ""))['entry_data']['ProfilePage'][0]
         var followers = data['graphql']['user']['edge_followed_by']['count']
         client.channels.get("642886967100440591").setName(`Instagram followers: ${(followers / 1000 + "").split(".")[0] + ((followers / 1000 + "").split(".")[1].substring(0, 1) > 0 ? "." + (followers / 1000 + "").split(".")[1].substring(0, 1) : "")}k`)
-        console.log(`${(followers / 1000 + "").split(".")[0] + ((followers / 1000 + "").split(".")[1].substring(0, 1) > 0 ? "." + (followers / 1000 + "").split(".")[1].substring(0, 1) : "")}k`)    
     })
     client.channels.get("642884636539879443").setName(`Discord users: ${client.channels.get("642884636539879443").guild.memberCount}`)
 })
