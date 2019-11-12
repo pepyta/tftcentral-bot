@@ -107,26 +107,17 @@ client.on('message', function (msg) {
                     emojis.push(legends[legend.legendId].emoji)
                     console.log("Reacted with: " + legends[legend.legendId].emoji)
                 })
-
-                const filter = (reaction, user) => {
-                    return emojis.includes(reaction.emoji.name) && user.id === msg.author.id;
-                }
-
-                msg.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
-                    .then(collected => {
-                        const reaction = collected.first();
-                        console.log(reaction.emoji.name)
+                
+                client.on('messageReactionAdd', function(messageReaction, user){
+                    if(messageReaction.message.author.id != user.id){
                         inv.forEach(function(legend){
-                            if(legends[legend.legendId].emoji == reaction.emoji.name){
+                            if(legends[legend.legendId].emoji == messageReaction.emoji.name){
                                 setDefault(userId, legend.legendId)
                             }
                         })
-                        msg.delete()
-                    })
-                    .catch(collected => {
-                        console.log(`After a minute, only ${collected.size} out of 4 reacted.`);
-                        message.reply('you didn\'t react with neither a thumbs up, nor a thumbs down.');
-                    });
+                        msg.delete()    
+                    }
+                })
             })
         }
     }
