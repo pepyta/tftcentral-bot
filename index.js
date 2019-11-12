@@ -97,6 +97,8 @@ client.on('message', function (msg) {
             })
             message += `\n\nReact with the correct emoji to select it!`
 
+            const userId = msg.author.id
+
             msg.author.send(message).then(function(msg){
                 var emojis = []
                 
@@ -114,8 +116,12 @@ client.on('message', function (msg) {
                     .then(collected => {
                         const reaction = collected.first();
                         console.log(reaction.emoji.name)
+                        inv.forEach(function(legend){
+                            if(legends[legend.legendId].emoji == reaction.emoji.name){
+                                setDefault(userId, legend.legendId)
+                            }
+                        })
                         msg.delete()
-                        msg.author.send("Success")
                     })
                     .catch(collected => {
                         console.log(`After a minute, only ${collected.size} out of 4 reacted.`);
