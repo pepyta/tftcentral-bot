@@ -37,9 +37,9 @@ client.on('message', function (msg) {
     } else {
         messageCounter.set(msg.author.id, 5)
     }
-    msg.author.send(JSON.stringify(inventory.get(msg.author.id)))
+    console.log(inventory.get(msg.author.id))
     //msg.author.send(defaults.get(msg.author.id))
-    msg.author.send(messageCounter.get(msg.author.id))
+    console.log(messageCounter.get(msg.author.id))
 })
 
 function addLittleLegend(legendId, author) {
