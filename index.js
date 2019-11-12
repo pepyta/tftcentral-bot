@@ -7,7 +7,7 @@ const app = express();
 
 const inventory = require('data-store')({ path: 'inventory.json' })
 const defaults = require('data-store')({ path: 'defaults.json' })
-const messageCounter = require('data-store')({ 'messageCounter.json' })
+const messageCounter = require('data-store')({ path: 'messageCounter.json' })
 const legends = require('./legends')
 
 client.on('ready', () => {
