@@ -70,7 +70,7 @@ function addLittleLegend(legendId, author) {
     }
 
     if (!defaults.get(author.id, undefined)) {
-        defaults.set(author.id, legendId)
+        setDefault(author.id, legendId)
     }
 
     inventory.set(author.id, inv)
@@ -95,11 +95,12 @@ client.on('message', function (msg) {
                 message += `- ${legends[legend.legendId].emoji} **${legends[legend.legendId].name}**: ${stars}\n`
             })
             message += `\n\nReact with the correct emoji`
+            
             msg.author.send(message, function (msg) {
                 inv.forEach(function (legend) {
                     msg.react(legend.emoji)
 
-                    msg.awaitReactions(filter, { max: 1, time: 60000, errors: ['time'] })
+                    msg.awaitReactions(true, { max: 1, time: 60000, errors: ['time'] })
                         .then(collected => {
                             const reaction = collected.first();
 
