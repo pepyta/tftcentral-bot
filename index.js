@@ -109,7 +109,7 @@ function setDefault(userId, legendId) {
         if(elem.legendId == legendId){
             if(elem.level == 2){
                 id = '644284951403036678'
-            } else if(level == 3){
+            } else if(elem.level == 3){
                 id = '644285009494016013'
             }
             emoji = legends[elem.legendId].emoji
