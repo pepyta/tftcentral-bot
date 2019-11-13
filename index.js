@@ -1,9 +1,9 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
-let Instagram = require('instagram-nodejs-without-api');
-Instagram = new Instagram()
+
 const express = require('express');
 const app = express();
+
 const { XMLHttpRequest } = require('xmlhttprequest')
 
 const inventory = require('data-store')({ path: 'inventory.json' })
@@ -27,19 +27,35 @@ client.on('message', function (msg) {
     if (value) {
         value--
         if (value == 0) {
-            var legendId = parseInt(Math.random() * legends.length, 10)
-            msg.author.send(`Congratulations! You've just got a new Little Legend!\nThe eggs content is: **${legends[legendId].name}**\nKeep on being active and you'll recive more rewards!`)
+            //var legendId = parseInt(Math.random() * legends.length, 10)
+            // Only generate little legend for less hen 3 star units
+            var pool = []
+            for (var i = 0; i < legends.length; i++) {
+                pool.push(i)
+            }
+
+            var inv = inventory.get(author.id, [])
+            inv.forEach(function (elem) {
+                if (elem.level == 3) {
+                    for (var i = 0; i < pool.length; i++) {
+                        if(i == elem.legendId){
+                            pool.splice(i, 1)
+                        }
+                    }
+                }
+            })
+
+            var legendId = pool[parseInt(Math.random() * pool.length, 10)]
+
+
+            msg.author.send(`Congratulations! You've just got a new Little Legend!\nThe eggs content is: **${legends[legendId].name}**\nKeep on being active and you'll recive more rewards!\n`)
             addLittleLegend(legendId, msg.author)
-            //msg.author.send(inventory.get(msg.author.id))
-            value = 6
+            value = 10
         }
         messageCounter.set(msg.author.id, value)
     } else {
         messageCounter.set(msg.author.id, 5)
     }
-    console.log(inventory.get(msg.author.id))
-    //msg.author.send(defaults.get(msg.author.id))
-    console.log(messageCounter.get(msg.author.id))
 })
 
 function addLittleLegend(legendId, author) {
@@ -97,7 +113,7 @@ client.on('message', function (msg) {
             })
             message += `\n\nReact with the correct emoji to select it!`
 
-            const userId = msg.author.id
+            const user = msg.author
 
             msg.author.send(message).then(function (msg) {
                 var emojis = []
@@ -112,15 +128,16 @@ client.on('message', function (msg) {
                     if (messageReaction.message.author.id != user.id) {
                         inv.forEach(function (legend) {
                             if (legends[legend.legendId].emoji == messageReaction.emoji.name) {
-                                setDefault(userId, legend.legendId)
+                                setDefault(user.id, legend.legendId)
                             }
                         })
+                        user.send(`Successfully selected **${legends[legend.legendId].name} ${legends[legend.legendId].emoji}**!`)
                         msg.delete()
                     }
                 })
             })
         }
-        if(msg.deletable){
+        if (msg.deletable) {
             msg.delete()
         }
     }
@@ -142,7 +159,7 @@ function httpGetAsync(theUrl, callback) {
         if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
             callback(xmlHttp.responseText);
     }
-    xmlHttp.open("GET", theUrl, true); // true for asynchronous
+    xmlHttp.open("GET", theUrl, false); // true for asynchronous
     xmlHttp.send(null);
 }
 
