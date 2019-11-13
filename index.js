@@ -34,7 +34,7 @@ client.on('message', function (msg) {
                 pool.push(i)
             }
 
-            var inv = inventory.get(author.id, [])
+            var inv = inventory.get(msg.author.id, [])
             inv.forEach(function (elem) {
                 if (elem.level == 3) {
                     for (var i = 0; i < pool.length; i++) {
@@ -112,8 +112,6 @@ client.on('message', function (msg) {
                 message += `- ${legends[legend.legendId].emoji} **${legends[legend.legendId].name}**: ${stars} ${legend.legendId == defaults.get(msg.author.id, 0) ? "**(selected)**" : ""}\n`
             })
             message += `\n\nReact with the correct emoji to select it!`
-
-            const user = msg.author
 
             msg.author.send(message).then(function (msg) {
                 var emojis = []
