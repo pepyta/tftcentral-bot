@@ -11,6 +11,10 @@ const defaults = require('data-store')({ path: 'defaults.json' })
 const messageCounter = require('data-store')({ path: 'messageCounter.json' })
 const legends = require('./legends')
 
+const emojiStrip = require('emoji-strip')
+
+const SERVER_ID = 642389197239353354
+
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`)
 })
@@ -95,7 +99,37 @@ function addLittleLegend(legendId, author) {
 
 function setDefault(userId, legendId) {
     defaults.set(userId, legendId)
+    var inv = inventory.get(userId, [])
+    var id = 644284912865771541
+    var emoji
+    inv.forEach(function(elem){
+        // 1 star: 644284912865771541
+        // 2 star: 644284951403036678
+        // 3 star: 644285009494016013
+        if(elem.legendId == legendId){
+            if(elem.level == 2){
+                id = 644284951403036678
+            } else {
+                id = 644285009494016013
+            }
+            emoji = elem.emoji
+        }
+    })
+
+    var currentUser = client.guilds.get(SERVER_ID).members.get(userId)
+    currentUser.removeRole(644284912865771541)
+    currentUser.removeRole(644284951403036678)
+    currentUser.removeRole(644285009494016013)
+    currentUser.addRole(id)
+
+    var name = `${emojiStrip(currentUser.displayName)} ${emoji}`
+    currentUser.setNickname(name)
 }
+
+client.on('guildMemberAdd', function(member){
+    // Remove emojis on joining the server
+    member.setNickname(emojiStrip(member.displayName))
+})
 
 client.on('message', function (msg) {
     if (msg.content.startsWith("!legend")) {
