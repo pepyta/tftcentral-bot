@@ -101,7 +101,7 @@ function setDefault(userId, legendId) {
     defaults.set(userId, legendId)
     var inv = inventory.get(userId, [])
     var id = '644284912865771541'
-    var emoji
+    var emoji = legends[legendId].emoji
     inv.forEach(function(elem){
         // 1 star: 644284912865771541
         // 2 star: 644284951403036678
@@ -112,7 +112,6 @@ function setDefault(userId, legendId) {
             } else if(elem.level == 3){
                 id = '644285009494016013'
             }
-            emoji = legends[elem.legendId].emoji
         }
     })
 
