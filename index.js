@@ -127,7 +127,7 @@ function setDefault(userId, legendId) {
 
 client.on('message', function(msg){
     if(msg.author.id != 230740886273654786) return
-    if(msg.startsWith('!addLittleLegend ')){
+    if(msg.content.startsWith('!addLittleLegend ')){
         var content = msg.content.replace("!addLittleLegend ", "").split(" ")
         var userId = {
             id: content[0]
