@@ -178,6 +178,7 @@ client.on('message', function (msg) {
                             }
                         })
                         user.send(`Successfully selected **${legends[legend2.legendId].name} ${legends[legend2.legendId].emoji}**!`)
+                        setDefault(user.id, legend2.legendId)
                         msg.delete()
                     }
                 })
