@@ -1,0 +1,41 @@
+.hex {
+    padding: 0 !important;
+}
+
+.team-position__container {
+    display: flex;
+    align-items: center;
+}
+
+.team-position__container__board__row {
+    display: flex;
+}
+.team-position__container .board-hexagon--empty {
+    background: #6495ed;
+}
+.team-position__container .board-hexagon {
+    background: lime;
+    height: 54px;
+    width: 50px;
+    clip-path: polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);
+    padding: 2px;
+    margin: 3px;
+}
+
+.team-position__container__board__row:nth-child(2n) {
+    margin-left: 30px;
+}
+
+.team-position {
+    padding: 20px;
+    user-select: none;
+}
+
+.team-position__container .board-hexagon__item {
+    clip-path: polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);
+    background: #27293d;
+    background-size: cover;
+    margin: 0 auto;
+    height: 50px;
+    width: 45px;
+}
