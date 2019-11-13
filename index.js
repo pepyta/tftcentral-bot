@@ -243,8 +243,8 @@ function readFromFile(file, fallback) {
     return new Promise(function (resolve, reject) {
         if (fs.existsSync(file)) {
             fs.readFile(file, 'utf8', function (err, data) {
-                if (err) resolve({})
-                resolve(JSON.parse(data))
+                if (err) resolve(fallback)
+                resolve(JSON.parse(data) == undefined ? JSON.parse(data) : fallback)
             })
         } else {
             resolve(fallback)
