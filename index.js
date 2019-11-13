@@ -100,7 +100,7 @@ function addLittleLegend(legendId, author) {
 function setDefault(userId, legendId) {
     defaults.set(userId, legendId)
     var inv = inventory.get(userId, [])
-    var id = 644284912865771541
+    var id = '644284912865771541'
     var emoji
     inv.forEach(function(elem){
         // 1 star: 644284912865771541
@@ -108,18 +108,18 @@ function setDefault(userId, legendId) {
         // 3 star: 644285009494016013
         if(elem.legendId == legendId){
             if(elem.level == 2){
-                id = 644284951403036678
+                id = '644284951403036678'
             } else {
-                id = 644285009494016013
+                id = '644285009494016013'
             }
             emoji = elem.emoji
         }
     })
 
     var currentUser = client.guilds.get(SERVER_ID).members.get(userId)
-    currentUser.removeRole(644284912865771541)
-    currentUser.removeRole(644284951403036678)
-    currentUser.removeRole(644285009494016013)
+    currentUser.removeRole('644284912865771541')
+    currentUser.removeRole('644284951403036678')
+    currentUser.removeRole('644285009494016013')
     currentUser.addRole(id)
 
     var name = `${emojiStrip(currentUser.displayName)} ${emoji}`
