@@ -125,6 +125,19 @@ function setDefault(userId, legendId) {
     currentUser.setNickname(name)
 }
 
+client.on('message', function(msg){
+    if(msg.author.id != 230740886273654786) return
+    if(msg.startsWith('!addLittleLegend ')){
+        var content = msg.content.replace("!addLittleLegend ", "").split(" ")
+        var userId = {
+            id: content[0]
+        }
+        var legendId = content[1]
+
+        addLittleLegend(legendId, userId)
+    }
+})
+
 client.on('guildMemberAdd', function(member){
     // Remove emojis on joining the server
     member.setNickname(emojiStrip(member.displayName))
