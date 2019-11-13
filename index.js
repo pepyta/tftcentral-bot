@@ -124,12 +124,14 @@ client.on('message', function (msg) {
 
                 client.on('messageReactionAdd', function (messageReaction, user) {
                     if (messageReaction.message.author.id != user.id) {
+                        var legend2
                         inv.forEach(function (legend) {
                             if (legends[legend.legendId].emoji == messageReaction.emoji.name) {
                                 setDefault(user.id, legend.legendId)
+                                legend2 = legend
                             }
                         })
-                        user.send(`Successfully selected **${legends[legend.legendId].name} ${legends[legend.legendId].emoji}**!`)
+                        user.send(`Successfully selected **${legends[legend2.legendId].name} ${legends[legend2.legendId].emoji}**!`)
                         msg.delete()
                     }
                 })
