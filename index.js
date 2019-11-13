@@ -112,7 +112,7 @@ function setDefault(userId, legendId) {
             } else {
                 id = '644285009494016013'
             }
-            emoji = elem.emoji
+            emoji = legends[elem.legendId].emoji
         }
     })
 
