@@ -254,7 +254,7 @@ function readFromFile(file, fallback) {
 
 function readData(file, key) {
     return new Promise(function (resolve, reject) {
-        readFromFile(file, {}).then(function (result, err) {
+        readFromFile(file, []).then(function (result, err) {
             if (err) reject(err)
 
             resolve(result[key])
@@ -264,7 +264,7 @@ function readData(file, key) {
 
 function updateData(file, key, value) {
     return new Promise(function (resolve, reject) {
-        readFromFile(file, fallback).then(function (result, err) {
+        readFromFile(file, []).then(function (result, err) {
             if (err) reject(err)
             result[key] = value
 
