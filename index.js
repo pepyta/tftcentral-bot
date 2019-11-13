@@ -23,7 +23,7 @@ app.listen(8080)
 
 client.on('message', function (msg) {
     if (msg.author.id != 230740886273654786) return
-    readData("messageCounter.json", msg.author.id).then(function (value) {
+    readData("./messageCounter.json", msg.author.id).then(function (value) {
         if (value) {
             value--
             if (value == 0) {
@@ -34,7 +34,7 @@ client.on('message', function (msg) {
                     pool.push(i)
                 }
 
-                readData("inventory.json", msg.author.id).then(function (inv) {
+                readData("./inventory.json", msg.author.id).then(function (inv) {
                     inv.forEach(function (elem) {
                         if (elem.level == 3) {
                             for (var i = 0; i < pool.length; i++) {
@@ -53,16 +53,16 @@ client.on('message', function (msg) {
                 addLittleLegend(legendId, msg.author)
                 value = 10
             }
-            updateData("messageCounter.json", msg.author.id, value)
+            updateData("./messageCounter.json", msg.author.id, value)
         } else {
-            updateData("messageCounter.json", msg.author.id, 5)
+            updateData("./messageCounter.json", msg.author.id, 5)
         }
 
     })
 })
 
 function addLittleLegend(legendId, author) {
-    readData("inventory.json", author.id).then(function (inv) {
+    readData("./inventory.json", author.id).then(function (inv) {
         /*
         elem: {
             legendId: 5,
@@ -89,19 +89,19 @@ function addLittleLegend(legendId, author) {
             })
         }
 
-        readData("defaults.json", author.id).then(function(value){
+        readData("./defaults.json", author.id).then(function(value){
             if(value == {} || value == legendId){
                 setDefault(author.id, legendId)
             }
         })
 
-        updateData("inventory.json", author.id, inv)
+        updateData("./inventory.json", author.id, inv)
     })
 }
 
 function setDefault(userId, legendId) {
-    updateData("defaults.json", userId, legendId)
-    readData("inventory.json", userId).then(function (inv) {
+    updateData("./defaults.json", userId, legendId)
+    readData("./inventory.json", userId).then(function (inv) {
         var id = '644285009494016013' // 3 star
         var emoji = legends[legendId].emoji
         inv.forEach(function (elem) {
@@ -150,7 +150,7 @@ client.on('guildMemberAdd', function (member) {
 
 client.on('message', function (msg) {
     if (msg.content.startsWith("!legend")) {
-        readData("inventory.json", msg.author.id).then(function (inv) {
+        readData("./inventory.json", msg.author.id).then(function (inv) {
 
             if (inv.length == 0) {
                 msg.author.send(`I'm sorry but you don't have any little legend yet!`)
@@ -161,7 +161,7 @@ client.on('message', function (msg) {
                     for (var i = 0; i < legend.level; i++) {
                         stars += '⭐'
                     }
-                    readData("default.json", msg.author.id).then(function(def){
+                    readData("./default.json", msg.author.id).then(function(def){
                         message += `- ${legends[legend.legendId].emoji} **${legends[legend.legendId].name}**: ${stars} ${legend.legendId == def ? "**(selected)**" : ""}\n`
                     })
                 })
@@ -244,7 +244,7 @@ function readFromFile(file, fallback) {
         if (fs.existsSync(file)) {
             fs.readFile(file, 'utf8', function (err, data) {
                 if (err) resolve(fallback)
-                resolve(JSON.parse(data) == undefined ? JSON.parse(data) : fallback)
+                resolve(JSON.parse(data) == undefined ? fallback : JSON.parse(data))
             })
         } else {
             resolve(fallback)
