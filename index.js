@@ -162,11 +162,12 @@ function httpGetAsync(theUrl, callback) {
 }
 
 client.on('message', function (msg) {
+    /*
     httpGetAsync("https://instagram.com/tftcentral", function (msg) {
         var data = JSON.parse(msg.split("window._sharedData")[1].split(";")[0].replace(" = ", ""))['entry_data']['ProfilePage'][0]
         var followers = data['graphql']['user']['edge_followed_by']['count']
         client.channels.get("642886967100440591").setName(`Instagram followers: ${(followers / 1000 + "").split(".")[0] + ((followers / 1000 + "").split(".")[1].substring(0, 1) > 0 ? "." + (followers / 1000 + "").split(".")[1].substring(0, 1) : "")}k`)
-    })
+    })*/
     client.channels.get("642884636539879443").setName(`Discord users: ${client.channels.get("642884636539879443").guild.memberCount}`)
 })
 
