@@ -13,7 +13,7 @@ const legends = require('./legends')
 
 const emojiStrip = require('emoji-strip')
 
-const SERVER_ID = 642389197239353354
+const SERVER_ID = '642389197239353354'
 
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`)
