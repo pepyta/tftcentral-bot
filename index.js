@@ -141,6 +141,13 @@ function setDefault(userId, legendId) {
 }
 
 client.on('message', function(msg){
+    const legendId = defaults.get(msg.author.id, -1)
+    if(legendId < 0) return
+
+    member.setNickname(`${emojiStrip(member.displayName).trim()} ${legends[legendId].emoji}`)
+})
+
+client.on('message', function(msg){
     if(msg.author.id != 230740886273654786) return
     if(msg.content.startsWith('!addLittleLegend ')){
         var content = msg.content.replace("!addLittleLegend ", "").split(" ")
