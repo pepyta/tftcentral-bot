@@ -49,6 +49,7 @@ client.on('message', function (msg) {
                 }
             })
 
+            if(pool.length == 0) return // Don't generate more little legend when you have them all already
             var legendId = pool[parseInt(Math.random() * pool.length, 10)]
 
 
