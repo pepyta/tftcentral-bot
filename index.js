@@ -126,6 +126,7 @@ function setDefault(userId, legendId) {
         })
     })
 
+    /*
     var counter = 0
     legends.forEach(function(legend){
         currentUser.removeRole(legend.role).then(function(){
@@ -135,9 +136,27 @@ function setDefault(userId, legendId) {
             }
         })
     })
+    */
 
+    assignLittleLegendRole(currentUser, legends, 0, legendId).then(function(result){console.log(result)})
     var name = `${emojiStrip(currentUser.displayName).trim()} ${emoji}`
     currentUser.setNickname(name)
+}
+
+function assignLittleLegendRole(currentUser, legends, legendId, pickedLittleLegend){
+    return new Promise(function(resolve, reject){
+        if(legendId < legends.length){      
+            currentUser.removeRole(legends[legendId].role).then(function(){
+                assignLittleLegendRole(currentUser, legends, legendId+1, pickedLittleLegend).then(function(){
+                    resolve()
+                })
+            })
+        } else {
+            currentUser.addRole(legends[pickedLittleLegend].role).then(function(){
+                resolve("done")
+            })
+        }
+    })
 }
 
 client.on('message', function(msg){
