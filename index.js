@@ -184,6 +184,7 @@ client.on('message', function (msg) {
 
 
 client.on('messageReactionAdd', function (messageReaction, user) {
+    var inv = inventory.get(user.id, [])
     if (messageReaction.message.author.id != user.id) {
         var legend2
         inv.forEach(function (legend) {
