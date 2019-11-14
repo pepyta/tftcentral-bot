@@ -1,10 +1,8 @@
-const Discord = require('discord.js');
-const client = new Discord.Client();
+const Discord = require('discord.js')
+const client = new Discord.Client()
 
-const express = require('express');
-const app = express();
-
-const { XMLHttpRequest } = require('xmlhttprequest')
+const express = require('express')
+const app = express()
 
 const inventory = require('data-store')({ path: 'inventory.json' })
 const defaults = require('data-store')({ path: 'defaults.json' })
@@ -223,16 +221,6 @@ client.on('ready', () => {
         }
     });
 });
-
-function httpGetAsync(theUrl, callback) {
-    var xmlHttp = new XMLHttpRequest();
-    xmlHttp.onreadystatechange = function () {
-        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
-            callback(xmlHttp.responseText);
-    }
-    xmlHttp.open("GET", theUrl, false); // true for asynchronous
-    xmlHttp.send(null);
-}
 
 client.on('message', function (msg) {
     /*
