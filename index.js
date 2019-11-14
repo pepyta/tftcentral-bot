@@ -158,6 +158,10 @@ function assignLittleLegendRole(currentUser, legends, legendId, pickedLittleLege
                 assignLittleLegendRole(currentUser, legends, legendId + 1, pickedLittleLegend).then(function () {
                     resolve()
                 })
+            }).catch(function(){
+                assignLittleLegendRole(currentUser, legends, legendId + 1, pickedLittleLegend).then(function () {
+                    resolve()
+                })
             })
         } else {
             currentUser.addRole(legends[pickedLittleLegend].role).then(function () {
