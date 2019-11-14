@@ -142,9 +142,11 @@ function setDefault(userId, legendId) {
 
 client.on('message', function(msg){
     const legendId = defaults.get(msg.author.id, -1)
-    if(legendId < 0) return
-
-    member.setNickname(`${emojiStrip(member.displayName).trim()} ${legends[legendId].emoji}`)
+    if(legendId < 0) {
+        member.setNickname(`${emojiStrip(member.displayName).trim()}`)
+    } else {
+        member.setNickname(`${emojiStrip(member.displayName).trim()} ${legends[legendId].emoji}`)
+    }
 })
 
 client.on('message', function(msg){
