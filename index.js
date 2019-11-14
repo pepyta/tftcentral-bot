@@ -78,10 +78,15 @@ function addLittleLegend(legendId, author) {
         }
     })
 
+    var shouldUpdate = false
     if (has) {
         inv.forEach(function (elem) {
             if (elem.legendId == legendId) {
                 elem.level++
+                if(elem.legendId == defaults.get(author.id, -1)){
+                    shouldUpdate = true
+                }
+
             }
         })
     } else {
@@ -96,6 +101,9 @@ function addLittleLegend(legendId, author) {
     }
 
     inventory.set(author.id, inv)
+    if(shouldUpdate){
+        setDefault(author.id, legendId)
+    }
 }
 
 function setDefault(userId, legendId) {
