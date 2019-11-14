@@ -99,7 +99,7 @@ function addLittleLegend(legendId, author) {
     inventory.set(author.id, inv)
 }
 
-function setDefault(userId, legendId) {
+async function setDefault(userId, legendId) {
     defaults.set(userId, legendId)
     var inv = inventory.get(userId, [])
     var id = '644284912865771541'
@@ -118,17 +118,16 @@ function setDefault(userId, legendId) {
     })
 
     var currentUser = client.guilds.get(SERVER_ID).members.get(userId)
-    currentUser.removeRole('644284912865771541')
-    currentUser.removeRole('644284951403036678')
-    currentUser.removeRole('644285009494016013')
+    await currentUser.removeRole('644284912865771541')
+    await currentUser.removeRole('644284951403036678')
+    await currentUser.removeRole('644285009494016013')
 
     legends.forEach(function(legend){
-        currentUser.removeRole(legend.role)
+        await currentUser.removeRole(legend.role)
     })
 
-    currentUser.addRole(legends[legendId].role)
-
-    currentUser.addRole(id)
+    await currentUser.addRole(legends[legendId].role)
+    await currentUser.addRole(id)
 
     var name = `${emojiStrip(currentUser.displayName).trim()} ${emoji}`
     currentUser.setNickname(name)
