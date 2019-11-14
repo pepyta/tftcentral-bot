@@ -13,6 +13,8 @@ const legends = require('./legends')
 
 const emojiStrip = require('emoji-strip')
 
+var lastMessageByUser = {}
+
 const SERVER_ID = '642389197239353354'
 
 client.on('ready', () => {
@@ -169,6 +171,8 @@ client.on('message', function (msg) {
             msg.author.send(message).then(function (msg) {
                 var emojis = []
 
+                lastMessageByUser[msg.author.id] = msg
+
                 inv.forEach(function (legend) {
                     msg.react(legends[legend.legendId].emoji)
                     emojis.push(legends[legend.legendId].emoji)
@@ -197,7 +201,9 @@ client.on('messageReactionAdd', function (messageReaction, user) {
         if(!legend2) return // Fix possible bad emoji
         user.send(`Successfully selected **${legends[legend2.legendId].name} ${legends[legend2.legendId].emoji}**!`)
         setDefault(user.id, legend2.legendId)
-        msg.delete()
+        if(lastMessageByUser[user.id]){
+            lastMessageByUser[user.id].delete()
+        }
     }
 })
 
