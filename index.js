@@ -53,7 +53,11 @@ client.on('message', function (msg) {
             var legendId = pool[parseInt(Math.random() * pool.length, 10)]
 
 
-            msg.author.send(`Congratulations! You've just got a new Little Legend!\nThe eggs content is: **${legends[legendId].name}**\nKeep on being active and you'll recive more rewards!\n`)
+            msg.author.send(`Congratulations! You've just got a new Little Legend!\nThe eggs content is: **${legends[legendId].name}**\nKeep on being active and you'll recive more rewards!\n`).catch(function(){
+                msg.channel.send(`Congratulations! You've just got a new Little Legend!\nThe eggs content is: **${legends[legendId].name}**\nKeep on being active and you'll recive more rewards!\n`).then(function(msg){
+                    setTimeout(msg.delete, 10000)
+                })
+            })
             addLittleLegend(legendId, msg.author)
             value = 45
         }
@@ -207,7 +211,11 @@ client.on('message', function (msg) {
     if (msg.content.startsWith("!legend")) {
         var inv = inventory.get(msg.author.id, [])
         if (inv.length == 0) {
-            msg.author.send(`I'm sorry but you don't have any little legend yet!`)
+            msg.author.send(`I'm sorry but you don't have any little legend yet!`).catch(function(){
+                msg.channel.send(`Enable server DM's in order to use this function!`).then(function(msg){
+                    setTimeout(msg.delete, 10000)
+                })
+            })
         } else {
             var message = `Select which little legend do you want to use:\n`
             inv.forEach(function (legend) {
@@ -228,6 +236,10 @@ client.on('message', function (msg) {
                     msg.react(legends[legend.legendId].emoji)
                     emojis.push(legends[legend.legendId].emoji)
                     console.log("Reacted with: " + legends[legend.legendId].emoji)
+                })
+            }).catch(function(){
+                msg.channel.send(`Enable server DM's in order to use this function!`).then(function(msg){
+                    setTimeout(msg.delete, 10000)
                 })
             })
         }
