@@ -1,35 +1,43 @@
 module.exports = [
     {
         "name": "Hauntling",
-        "emoji": "👻"
+        "emoji": "👻",
+        "role": '644577832877686804'
     },
     {
         "name": "Featherknight",
-        "emoji": "🐧"
+        "emoji": "🐧",
+        "role": '644577942139174932'
     },
     {
         "name": "Paddlemar",
-        "emoji": "🐢"
+        "emoji": "🐢",
+        "role": '644577938209243170'
     },
     {
         "name": "Hushtail",
-        "emoji": "🐿️"
+        "emoji": "🐿️",
+        "role": '644577938209243170'
     },
     {
         "name": "Protector",
-        "emoji": "🐈"
+        "emoji": "🐈",
+        "role": '644577938209243170'
     },
     {
         "name": "Silverwing",
-        "emoji": "🐥"
+        "emoji": "🐥",
+        "role": '644578215767310361'
     },
     {
         "name": "Furyhorn",
-        "emoji": "🦁"
+        "emoji": "🦁",
+        "role": '644578282414669824'
     },
     {
         "name": "Fuwa",
-        "emoji": "🐷"
+        "emoji": "🐷",
+        "role": '644578355936755712'
     },
 
 ]

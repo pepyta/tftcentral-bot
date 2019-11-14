@@ -119,9 +119,16 @@ function setDefault(userId, legendId) {
     currentUser.removeRole('644284912865771541')
     currentUser.removeRole('644284951403036678')
     currentUser.removeRole('644285009494016013')
+
+    legends.forEach(function(legend){
+        currentUser.removeRole(legend.role)
+    })
+
+    currentUser.addRole(legends[legendId].role)
+
     currentUser.addRole(id)
 
-    var name = `${emojiStrip(currentUser.displayName)} ${emoji}`
+    var name = `${emojiStrip(currentUser.displayName).trim()} ${emoji}`
     currentUser.setNickname(name)
 }
 
