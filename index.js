@@ -174,26 +174,29 @@ client.on('message', function (msg) {
                     emojis.push(legends[legend.legendId].emoji)
                     console.log("Reacted with: " + legends[legend.legendId].emoji)
                 })
-
-                client.on('messageReactionAdd', function (messageReaction, user) {
-                    if (messageReaction.message.author.id != user.id) {
-                        var legend2
-                        inv.forEach(function (legend) {
-                            if (legends[legend.legendId].emoji == messageReaction.emoji.name) {
-                                setDefault(user.id, legend.legendId)
-                                legend2 = legend
-                            }
-                        })
-                        user.send(`Successfully selected **${legends[legend2.legendId].name} ${legends[legend2.legendId].emoji}**!`)
-                        setDefault(user.id, legend2.legendId)
-                        msg.delete()
-                    }
-                })
             })
         }
         if (msg.deletable) {
             msg.delete()
         }
+    }
+})
+
+
+client.on('messageReactionAdd', function (messageReaction, user) {
+    if (messageReaction.message.author.id != user.id) {
+        var legend2
+        inv.forEach(function (legend) {
+            if (legends[legend.legendId].emoji == messageReaction.emoji.name) {
+                setDefault(user.id, legend.legendId)
+                legend2 = legend
+            }
+        })
+
+        if(!legend2) return // Fix possible bad emoji
+        user.send(`Successfully selected **${legends[legend2.legendId].name} ${legends[legend2.legendId].emoji}**!`)
+        setDefault(user.id, legend2.legendId)
+        msg.delete()
     }
 })
 
