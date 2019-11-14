@@ -140,7 +140,11 @@ function setDefault(userId, legendId) {
 
     assignLittleLegendRole(currentUser, legends, 0, legendId).then(function(result){console.log(result)})
     var name = `${emojiStrip(currentUser.displayName).trim()} ${emoji}`
-    currentUser.setNickname(name)
+    try {
+        currentUser.setNickname(name)
+    } catch {
+        console.log("Admin tried to change nickname")
+    }
 }
 
 function assignLittleLegendRole(currentUser, legends, legendId, pickedLittleLegend){
@@ -160,11 +164,20 @@ function assignLittleLegendRole(currentUser, legends, legendId, pickedLittleLege
 }
 
 client.on('message', function(msg){
+    if(!msg.guild) return 
     const legendId = defaults.get(msg.author.id, -1)
     if(legendId < 0) {
-        member.setNickname(`${emojiStrip(member.displayName).trim()}`)
+        try {
+            msg.member.setNickname(`${emojiStrip(msg.member.displayName).trim()}`)
+        } catch {
+            console.log("Admin tried to change nickname")
+        }
     } else {
-        member.setNickname(`${emojiStrip(member.displayName).trim()} ${legends[legendId].emoji}`)
+        try {
+            msg.member.setNickname(`${emojiStrip(msg.member.displayName).trim()} ${legends[legendId].emoji}`).catch(function(){})
+        } catch {
+            console.log("Admin tried to change nickname")
+        }
     }
 })
 
