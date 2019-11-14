@@ -146,7 +146,7 @@ function setDefault(userId, legendId) {
     })
     */
 
-    assignLittleLegendRole(currentUser, legends, 0, legendId).then(function (result) { console.log(result) })
+    assignLittleLegendRole(currentUser, legends, 0, legendId).then(function (result) { console.log("Successfully updated roles") })
     var name = `${emojiStrip(currentUser.displayName).trim()} ${emoji}`
     currentUser.setNickname(name).catch(function () { console.log("Admin tried to change nickname") })
 }
@@ -159,13 +159,17 @@ function assignLittleLegendRole(currentUser, legends, legendId, pickedLittleLege
                     resolve()
                 })
             }).catch(function(){
-                assignLittleLegendRole(currentUser, legends, legendId + 1, pickedLittleLegend).then(function () {
+                assignLittleLegendRole(currentUser, legends, legendId, pickedLittleLegend).then(function () {
                     resolve()
                 })
             })
         } else {
             currentUser.addRole(legends[pickedLittleLegend].role).then(function () {
                 resolve("done")
+            }).catch(function(){
+                assignLittleLegendRole(currentUser, legends, legendId, pickedLittleLegend).then(function () {
+                    resolve()
+                })
             })
         }
     })
