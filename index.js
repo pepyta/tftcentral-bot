@@ -99,7 +99,7 @@ function addLittleLegend(legendId, author) {
     inventory.set(author.id, inv)
 }
 
-async function setDefault(userId, legendId) {
+function setDefault(userId, legendId) {
     defaults.set(userId, legendId)
     var inv = inventory.get(userId, [])
     var id = '644284912865771541'
@@ -117,17 +117,25 @@ async function setDefault(userId, legendId) {
         }
     })
 
+    // Remove roles then add it
     var currentUser = client.guilds.get(SERVER_ID).members.get(userId)
-    await currentUser.removeRole('644284912865771541')
-    await currentUser.removeRole('644284951403036678')
-    await currentUser.removeRole('644285009494016013')
-
-    legends.forEach(function(legend){
-        await currentUser.removeRole(legend.role)
+    currentUser.removeRole('644284912865771541').then(function(){
+        currentUser.removeRole('644284951403036678').then(function(){
+            currentUser.removeRole('644285009494016013').then(function(){
+                currentUser.addRole(id)
+            })
+        })
     })
 
-    await currentUser.addRole(legends[legendId].role)
-    await currentUser.addRole(id)
+    var counter = 0
+    legends.forEach(function(legend){
+        currentUser.removeRole(legend.role).then(function(){
+            counter++
+            if(counter == legends.length){
+                currentUser.addRole(legends[legendId].role)
+            }
+        })
+    })
 
     var name = `${emojiStrip(currentUser.displayName).trim()} ${emoji}`
     currentUser.setNickname(name)
