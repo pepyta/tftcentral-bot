@@ -55,7 +55,7 @@ client.on('message', function (msg) {
 
             msg.author.send(`Congratulations! You've just got a new Little Legend!\nThe eggs content is: **${legends[legendId].name}**\nKeep on being active and you'll recive more rewards!\n`)
             addLittleLegend(legendId, msg.author)
-            value = 15
+            value = 45
         }
         messageCounter.set(msg.author.id, value)
     } else {
