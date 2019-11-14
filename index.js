@@ -26,7 +26,7 @@ app.listen(8080)
 
 
 client.on('message', function (msg) {
-    if (msg.author.id != 230740886273654786) return
+    //if (msg.author.id != 230740886273654786) return
     var value = messageCounter.get(msg.author.id, undefined)
     if (value) {
         value--
@@ -54,11 +54,11 @@ client.on('message', function (msg) {
 
             msg.author.send(`Congratulations! You've just got a new Little Legend!\nThe eggs content is: **${legends[legendId].name}**\nKeep on being active and you'll recive more rewards!\n`)
             addLittleLegend(legendId, msg.author)
-            value = 10
+            value = 15
         }
         messageCounter.set(msg.author.id, value)
     } else {
-        messageCounter.set(msg.author.id, 5)
+        messageCounter.set(msg.author.id, 14)
     }
 })
 
