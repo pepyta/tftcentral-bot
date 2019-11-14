@@ -12,11 +12,11 @@ module.exports = [
     {
         "name": "Paddlemar",
         "emoji": "🐢",
-        "role": '644577938209243170'
+        "role": '644656221575708698'
     },
     {
         "name": "Hushtail",
-        "emoji": "🦝", // 🐿️ cannot be set because it has bad utf-8 code
+        "emoji": "🦊", // 🐿️ cannot be set because it has bad utf-8 code
         "role": '644577938209243170'
     },
     {
