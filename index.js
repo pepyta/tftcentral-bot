@@ -42,14 +42,14 @@ client.on('message', function (msg) {
             inv.forEach(function (elem) {
                 if (elem.level == 3) {
                     for (var i = 0; i < pool.length; i++) {
-                        if(i == elem.legendId){
+                        if (i == elem.legendId) {
                             pool.splice(i, 1)
                         }
                     }
                 }
             })
 
-            if(pool.length == 0) return // Don't generate more little legend when you have them all already
+            if (pool.length == 0) return // Don't generate more little legend when you have them all already
             var legendId = pool[parseInt(Math.random() * pool.length, 10)]
 
 
@@ -103,14 +103,14 @@ function setDefault(userId, legendId) {
     var inv = inventory.get(userId, [])
     var id = '644284912865771541'
     var emoji = legends[legendId].emoji
-    inv.forEach(function(elem){
+    inv.forEach(function (elem) {
         // 1 star: 644284912865771541
         // 2 star: 644284951403036678
         // 3 star: 644285009494016013
-        if(elem.legendId == legendId){
-            if(elem.level == 2){
+        if (elem.legendId == legendId) {
+            if (elem.level == 2) {
                 id = '644284951403036678'
-            } else if(elem.level == 3){
+            } else if (elem.level == 3) {
                 id = '644285009494016013'
             }
         }
@@ -118,9 +118,9 @@ function setDefault(userId, legendId) {
 
     // Remove roles then add it
     var currentUser = client.guilds.get(SERVER_ID).members.get(userId)
-    currentUser.removeRole('644284912865771541').then(function(){
-        currentUser.removeRole('644284951403036678').then(function(){
-            currentUser.removeRole('644285009494016013').then(function(){
+    currentUser.removeRole('644284912865771541').then(function () {
+        currentUser.removeRole('644284951403036678').then(function () {
+            currentUser.removeRole('644285009494016013').then(function () {
                 currentUser.addRole(id)
             })
         })
@@ -138,40 +138,40 @@ function setDefault(userId, legendId) {
     })
     */
 
-    assignLittleLegendRole(currentUser, legends, 0, legendId).then(function(result){console.log(result)})
+    assignLittleLegendRole(currentUser, legends, 0, legendId).then(function (result) { console.log(result) })
     var name = `${emojiStrip(currentUser.displayName).trim()} ${emoji}`
-    currentUser.setNickname(name).catch(function(){console.log("Admin tried to change nickname")})
+    currentUser.setNickname(name).catch(function () { console.log("Admin tried to change nickname") })
 }
 
-function assignLittleLegendRole(currentUser, legends, legendId, pickedLittleLegend){
-    return new Promise(function(resolve, reject){
-        if(legendId < legends.length){      
-            currentUser.removeRole(legends[legendId].role).then(function(){
-                assignLittleLegendRole(currentUser, legends, legendId+1, pickedLittleLegend).then(function(){
+function assignLittleLegendRole(currentUser, legends, legendId, pickedLittleLegend) {
+    return new Promise(function (resolve, reject) {
+        if (legendId < legends.length) {
+            currentUser.removeRole(legends[legendId].role).then(function () {
+                assignLittleLegendRole(currentUser, legends, legendId + 1, pickedLittleLegend).then(function () {
                     resolve()
                 })
             })
         } else {
-            currentUser.addRole(legends[pickedLittleLegend].role).then(function(){
+            currentUser.addRole(legends[pickedLittleLegend].role).then(function () {
                 resolve("done")
             })
         }
     })
 }
 
-client.on('message', function(msg){
-    if(!msg.guild) return 
+client.on('message', function (msg) {
+    if (!msg.guild) return
     const legendId = defaults.get(msg.author.id, -1)
-    if(legendId < 0) {
-        msg.member.setNickname(`${emojiStrip(msg.member.displayName).trim()}`).catch(function(){console.log("Admin tried to change nickname")})
+    if (legendId < 0) {
+        msg.member.setNickname(`${emojiStrip(msg.member.displayName).trim()}`).catch(function () { console.log("Admin tried to change nickname") })
     } else {
-        msg.member.setNickname(`${emojiStrip(msg.member.displayName).trim()} ${legends[legendId].emoji}`).catch(function(){console.log("Admin tried to change nickname")})
+        msg.member.setNickname(`${emojiStrip(msg.member.displayName).trim()} ${legends[legendId].emoji}`).catch(function () { console.log("Admin tried to change nickname") })
     }
 })
 
-client.on('message', function(msg){
-    if(msg.author.id != 230740886273654786) return
-    if(msg.content.startsWith('!addLittleLegend ')){
+client.on('message', function (msg) {
+    if (msg.author.id != 230740886273654786) return
+    if (msg.content.startsWith('!addLittleLegend ')) {
         var content = msg.content.replace("!addLittleLegend ", "").split(" ")
         var userId = {
             id: content[0]
@@ -182,7 +182,7 @@ client.on('message', function(msg){
     }
 })
 
-client.on('guildMemberAdd', function(member){
+client.on('guildMemberAdd', function (member) {
     // Remove emojis on joining the server
     member.setNickname(emojiStrip(member.displayName))
 })
@@ -224,21 +224,20 @@ client.on('message', function (msg) {
 
 client.on('messageReactionAdd', function (messageReaction, user) {
     var inv = inventory.get(user.id, [])
-    if (messageReaction.message.author.id != user.id) {
-        var legend2
-        inv.forEach(function (legend) {
-            if (legends[legend.legendId].emoji == messageReaction.emoji.name) {
-                setDefault(user.id, legend.legendId)
-                legend2 = legend
-            }
-        })
-
-        if(!legend2) return // Fix possible bad emoji
-        user.send(`Successfully selected **${legends[legend2.legendId].name} ${legends[legend2.legendId].emoji}**!`)
-        setDefault(user.id, legend2.legendId)
-        if(lastMessageByUser[user.id]){
-            lastMessageByUser[user.id].delete()
+    if(client.user.id == user.id) return
+    var legend2
+    inv.forEach(function (legend) {
+        if (legends[legend.legendId].emoji == messageReaction.emoji.name) {
+            setDefault(user.id, legend.legendId)
+            legend2 = legend
         }
+    })
+
+    if (!legend2) return // Fix possible bad emoji
+    user.send(`Successfully selected **${legends[legend2.legendId].name} ${legends[legend2.legendId].emoji}**!`)
+    setDefault(user.id, legend2.legendId)
+    if (lastMessageByUser[user.id]) {
+        lastMessageByUser[user.id].delete()
     }
 })
 
