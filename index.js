@@ -202,6 +202,42 @@ client.on('message', function (msg) {
     }
 })
 
+client.on('message', function(msg){
+    
+	if (message.content.startsWith('!about')) {
+		message.channel.send({
+			embed: {
+				author: {
+					name: bot.user.username,
+					url: "https://newhope.hu",
+					icon_url: ""
+				},
+				color: 5663164,
+				fields: [{
+					name: "Username",
+					value: bot.user.username,
+					inline: true
+				}, {
+					name: "Version",
+					value: "TFTCentral Bot v" + require('./package.json').version,
+					inline: true
+				}, {
+					name: "Developer",
+					value: "Gál Péter (pepyta)",
+					inline: true
+				}, {
+                    name: "GitHub",
+                    value: "[https://github.com/pepyta/tftcentral-bot](https://github.com/pepyta/tftcentral-bot)",
+                    inline: true
+                }],
+				thumbnail: {
+					url: bot.user.displayAvatarURL
+				}
+			}
+		})
+	}
+})
+
 client.on('guildMemberAdd', function (member) {
     // Remove emojis on joining the server
     member.setNickname(emojiStrip(member.displayName))
