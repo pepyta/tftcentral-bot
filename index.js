@@ -203,19 +203,18 @@ client.on('message', function (msg) {
 })
 
 client.on('message', function(msg){
-    
-	if (message.content.startsWith('!about')) {
-		message.channel.send({
+	if (msg.content.startsWith('!about')) {
+		msg.channel.send({
 			embed: {
 				author: {
-					name: bot.user.username,
+					name: client.user.username,
 					url: "https://newhope.hu",
 					icon_url: ""
 				},
 				color: 5663164,
 				fields: [{
 					name: "Username",
-					value: bot.user.username,
+					value: client.user.username,
 					inline: true
 				}, {
 					name: "Version",
@@ -231,7 +230,7 @@ client.on('message', function(msg){
                     inline: true
                 }],
 				thumbnail: {
-					url: bot.user.displayAvatarURL
+					url: client.user.displayAvatarURL
 				}
 			}
 		})
