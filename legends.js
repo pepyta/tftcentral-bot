@@ -17,7 +17,7 @@ module.exports = [
     {
         "name": "Hushtail",
         "emoji": "🦊", // 🐿️ cannot be set because it has bad utf-8 code
-        "role": '644577938209243170'
+        "role": '644663122937774131'
     },
     {
         "name": "Protector",
