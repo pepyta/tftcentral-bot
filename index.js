@@ -159,15 +159,22 @@ function setDefault(userId, legendId) {
 function assignLittleLegendRole(currentUser, legends, legendId, pickedLittleLegend) {
     return new Promise(function (resolve, reject) {
         if (legendId < legends.length) {
-            currentUser.removeRole(legends[legendId].role).then(function () {
+            if(currentUser.roles.has(legends[legendId].role)){
+
+                currentUser.removeRole(legends[legendId].role).then(function () {
+                    assignLittleLegendRole(currentUser, legends, legendId + 1, pickedLittleLegend).then(function () {
+                        resolve()
+                    })
+                }).catch(function () {
+                    assignLittleLegendRole(currentUser, legends, legendId, pickedLittleLegend).then(function () {
+                        resolve()
+                    })
+                })
+            } else {
                 assignLittleLegendRole(currentUser, legends, legendId + 1, pickedLittleLegend).then(function () {
                     resolve()
                 })
-            }).catch(function () {
-                assignLittleLegendRole(currentUser, legends, legendId, pickedLittleLegend).then(function () {
-                    resolve()
-                })
-            })
+            }
         } else {
             currentUser.addRole(legends[pickedLittleLegend].role).then(function () {
                 resolve("done")
