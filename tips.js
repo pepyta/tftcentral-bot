@@ -9,4 +9,11 @@ module.exports = [
     "You can find new friends on the server who you can play TFT with!",
     "We have Discord Clans in League of Legends. Ask the moderators to invite you in!",
     "The Orb of Enlightment now refreshes every 72 hours, so you have to play 5 games every 3 day!",
+    "Don't use Spear of Shojin on no or low mana units! The B.F. Sword and the Tear of the Goddess has much more value.",
+    "Don't spend all your money on Little Legends and Arena Skins, because they're just some good looking textures.",
+    "Choose what you pick in Carousel for the item, not for the champion!",
+    "Spatula is still the strongest item that you can get, but use it with wisdom!",
+    "You can comeback even from 1 HP!",
+    "Mountain hex buffs are stacked each round, so try to position your late game champions there!",
+    "There will be multiple sets that rotates, one after another.",
 ]

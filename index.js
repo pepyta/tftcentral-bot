@@ -326,7 +326,7 @@ setInterval(function () {
 }, 10000)
 
 var noSpamTip = 0
-client.on('message', function(){
+client.on('message', function(msg){
     if(msg.channel.id == GENERAL_CHANNEL){
         noSpamTip++
         if(noSpamTip > 20){
