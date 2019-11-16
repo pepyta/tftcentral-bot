@@ -53,8 +53,8 @@ client.on('message', function (msg) {
             var legendId = pool[parseInt(Math.random() * pool.length, 10)]
 
 
-            msg.author.send(`Congratulations! You've just got a new Little Legend!\nThe eggs content is: **${legends[legendId].name}**\nKeep on being active and you'll recive more rewards!\n`).catch(function(){
-                msg.channel.send(`Congratulations! You've just got a new Little Legend!\nThe eggs content is: **${legends[legendId].name}**\nKeep on being active and you'll recive more rewards!\n`).then(function(msg){
+            msg.author.send(`Congratulations! You've just got a new Little Legend!\nThe eggs content is: **${legends[legendId].name}**\nKeep on being active and you'll recive more rewards!\n`).catch(function () {
+                msg.channel.send(`Congratulations! You've just got a new Little Legend!\nThe eggs content is: **${legends[legendId].name}**\nKeep on being active and you'll recive more rewards!\n`).then(function (msg) {
                     setTimeout(msg.delete, 10000)
                 })
             })
@@ -87,7 +87,7 @@ function addLittleLegend(legendId, author) {
         inv.forEach(function (elem) {
             if (elem.legendId == legendId) {
                 elem.level++
-                if(elem.legendId == defaults.get(author.id, -1)){
+                if (elem.legendId == defaults.get(author.id, -1)) {
                     shouldUpdate = true
                 }
 
@@ -105,7 +105,7 @@ function addLittleLegend(legendId, author) {
     }
 
     inventory.set(author.id, inv)
-    if(shouldUpdate){
+    if (shouldUpdate) {
         setDefault(author.id, legendId)
     }
 }
@@ -162,7 +162,7 @@ function assignLittleLegendRole(currentUser, legends, legendId, pickedLittleLege
                 assignLittleLegendRole(currentUser, legends, legendId + 1, pickedLittleLegend).then(function () {
                     resolve()
                 })
-            }).catch(function(){
+            }).catch(function () {
                 assignLittleLegendRole(currentUser, legends, legendId, pickedLittleLegend).then(function () {
                     resolve()
                 })
@@ -170,7 +170,7 @@ function assignLittleLegendRole(currentUser, legends, legendId, pickedLittleLege
         } else {
             currentUser.addRole(legends[pickedLittleLegend].role).then(function () {
                 resolve("done")
-            }).catch(function(){
+            }).catch(function () {
                 assignLittleLegendRole(currentUser, legends, legendId, pickedLittleLegend).then(function () {
                     resolve()
                 })
@@ -202,39 +202,39 @@ client.on('message', function (msg) {
     }
 })
 
-client.on('message', function(msg){
-	if (msg.content.startsWith('!about')) {
-		msg.channel.send({
-			embed: {
-				author: {
-					name: client.user.username,
-					url: "https://newhope.hu",
-					icon_url: ""
-				},
-				color: 5663164,
-				fields: [{
-					name: "Username",
-					value: client.user.username,
-					inline: true
-				}, {
-					name: "Version",
-					value: "TFTCentral Bot v" + require('./package.json').version,
-					inline: true
-				}, {
-					name: "Developer",
-					value: "Gál Péter (pepyta)",
-					inline: true
-				}, {
+client.on('message', function (msg) {
+    if (msg.content.startsWith('!about')) {
+        msg.channel.send({
+            embed: {
+                author: {
+                    name: client.user.username,
+                    url: "https://newhope.hu",
+                    icon_url: ""
+                },
+                color: 5663164,
+                fields: [{
+                    name: "Username",
+                    value: client.user.username,
+                    inline: true
+                }, {
+                    name: "Version",
+                    value: "TFTCentral Bot v" + require('./package.json').version,
+                    inline: true
+                }, {
+                    name: "Developer",
+                    value: "Gál Péter (pepyta)",
+                    inline: true
+                }, {
                     name: "GitHub",
                     value: "[https://github.com/pepyta/tftcentral-bot](https://github.com/pepyta/tftcentral-bot)",
                     inline: true
                 }],
-				thumbnail: {
-					url: client.user.displayAvatarURL
-				}
-			}
-		})
-	}
+                thumbnail: {
+                    url: client.user.displayAvatarURL
+                }
+            }
+        })
+    }
 })
 
 client.on('guildMemberAdd', function (member) {
@@ -246,8 +246,8 @@ client.on('message', function (msg) {
     if (msg.content.startsWith("!legend")) {
         var inv = inventory.get(msg.author.id, [])
         if (inv.length == 0) {
-            msg.author.send(`I'm sorry but you don't have any little legend yet!`).catch(function(){
-                msg.channel.send(`Enable server DM's in order to use this function!`).then(function(msg){
+            msg.author.send(`I'm sorry but you don't have any little legend yet!`).catch(function () {
+                msg.channel.send(`Enable server DM's in order to use this function!`).then(function (msg) {
                     setTimeout(msg.delete, 10000)
                 })
             })
@@ -272,8 +272,8 @@ client.on('message', function (msg) {
                     emojis.push(legends[legend.legendId].emoji)
                     console.log("Reacted with: " + legends[legend.legendId].emoji)
                 })
-            }).catch(function(){
-                msg.channel.send(`Enable server DM's in order to use this function!`).then(function(msg){
+            }).catch(function () {
+                msg.channel.send(`Enable server DM's in order to use this function!`).then(function (msg) {
                     setTimeout(msg.delete, 10000)
                 })
             })
@@ -287,7 +287,7 @@ client.on('message', function (msg) {
 
 client.on('messageReactionAdd', function (messageReaction, user) {
     var inv = inventory.get(user.id, [])
-    if(client.user.id == user.id) return
+    if (client.user.id == user.id) return
     var legend2
     inv.forEach(function (legend) {
         if (legends[legend.legendId].emoji == messageReaction.emoji.name) {
@@ -315,22 +315,29 @@ client.on('ready', () => {
 });
 
 var lastGm
-setInterval(function(){
+setInterval(function () {
     var d = new Date()
     console.log(d.getHours())
-    if(d.getHours() == 9 && lastGm.getDate() != d.getDate()){
+    if (d.getHours() == 7 && (!lastGm || lastGm.getDate() != d.getDate())) {
         client.channels.get("642469846155788288").send(`Good morning everyone! ☕`)
         lastGm = d
     }
 }, 10000)
 
+setInterval(function () {
+    const tips = require('./tips')
+
+    client.channels.get("643782323422363659").send({
+        "embed": {
+            "title": "Tip",
+            "color": 16312092,
+            "description": tips[parseInt(Math.random() * tips.length, 10)]
+        }
+    })
+
+}, parseInt(Math.random() * (7200) + 14400, 10))
+
 client.on('message', function (msg) {
-    /*
-    httpGetAsync("https://instagram.com/tftcentral", function (msg) {
-        var data = JSON.parse(msg.split("window._sharedData")[1].split(";")[0].replace(" = ", ""))['entry_data']['ProfilePage'][0]
-        var followers = data['graphql']['user']['edge_followed_by']['count']
-        client.channels.get("642886967100440591").setName(`Instagram followers: ${(followers / 1000 + "").split(".")[0] + ((followers / 1000 + "").split(".")[1].substring(0, 1) > 0 ? "." + (followers / 1000 + "").split(".")[1].substring(0, 1) : "")}k`)
-    })*/
     client.channels.get("642884636539879443").setName(`Discord users: ${client.channels.get("642884636539879443").guild.memberCount}`)
 })
 
