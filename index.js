@@ -314,6 +314,16 @@ client.on('ready', () => {
     });
 });
 
+var lastGm
+setInterval(function(){
+    var d = new Date()
+    console.log(d.getHours())
+    if(d.getHours() == 9 && lastGm.getDate() != d.getDate()){
+        client.channels.get("642469846155788288").send(`Good morning everyone! ☕`)
+        lastGm = d
+    }
+}, 10000)
+
 client.on('message', function (msg) {
     /*
     httpGetAsync("https://instagram.com/tftcentral", function (msg) {
