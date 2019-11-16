@@ -27,6 +27,7 @@ app.listen(8080)
 
 
 client.on('message', function (msg) {
+    if(msg.author.id == client.user.id) return // Don't give TFTCentral any more little legend!
     //if (msg.author.id != 230740886273654786) return
     var value = messageCounter.get(msg.author.id, undefined)
     if (value) {
@@ -186,6 +187,43 @@ function assignLittleLegendRole(currentUser, legends, legendId, pickedLittleLege
         }
     })
 }
+
+client.on('message', function(msg){
+    if(!msg.content.startsWith("!ranklist")) return
+    const allInv = inventory.get()
+
+    var ranks = []
+    console.log(allInv)
+    Object.keys(allInv).forEach(function(key){
+        if(key != client.user.id && key != 520994932828143639){
+            var sum = 0
+            allInv[key].forEach(function(legend){
+                sum += legend.level
+            })
+    
+            ranks.push({
+                id: key,
+                value: sum
+            })
+        }
+    })
+
+    ranks.sort(function(a, b){
+        return b.value - a.value
+    })
+
+    if(msg.deletable){
+        msg.delete()
+    }
+    msg.channel.send({
+        embed:{
+            title: "Ranklist",
+            description: `🥇 **${client.guilds.get(SERVER_ID).members.get(ranks[0].id).displayName}** (${ranks[0].value} little legends)\n
+            🥈 **${client.guilds.get(SERVER_ID).members.get(ranks[1].id).displayName}** (${ranks[1].value} little legends)\n
+            🥉 **${client.guilds.get(SERVER_ID).members.get(ranks[2].id).displayName}** (${ranks[2].value} little legends)`
+        }
+    })
+})
 
 client.on('message', function (msg) {
     if (!msg.guild) return
