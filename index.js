@@ -14,6 +14,7 @@ const emojiStrip = require('emoji-strip')
 var lastMessageByUser = {}
 
 const SERVER_ID = '642389197239353354'
+const GENERAL_CHANNEL = '642469846155788288' // #general
 
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`)
@@ -324,18 +325,25 @@ setInterval(function () {
     }
 }, 10000)
 
-setInterval(function () {
-    const tips = require('./tips')
-
-    client.channels.get("643782323422363659").send({
-        "embed": {
-            "title": "Tip",
-            "color": 16312092,
-            "description": tips[parseInt(Math.random() * tips.length, 10)]
+var noSpamTip = 0
+client.on('message', function(){
+    if(msg.channel.id == GENERAL_CHANNEL){
+        noSpamTip++
+        if(noSpamTip > 20){
+            const tips = require('./tips')
+            client.channels.get(GENERAL_CHANNEL).send({
+                "embed": {
+                    "title": "Tip",
+                    "color": 16312092,
+                    "description": tips[parseInt(Math.random() * tips.length, 10)]
+                }
+            })
+        
+            noSpamTip = 0
         }
-    })
-
-}, parseInt(Math.random() * (7200) + 14400, 10))
+        
+    }
+})
 
 client.on('message', function (msg) {
     client.channels.get("642884636539879443").setName(`Discord users: ${client.channels.get("642884636539879443").guild.memberCount}`)
