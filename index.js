@@ -370,20 +370,24 @@ setInterval(function () {
     }
 }, 10000)
 
+var tips = require('./tips')
 var noSpamTip = 0
 client.on('message', function(msg){
+    if(tips.length == 0){
+        tips = require('./tips')
+    }
     if(msg.channel.id == GENERAL_CHANNEL){
         noSpamTip++
         if(noSpamTip > 20){
-            const tips = require('./tips')
+            var pos = parseInt(Math.random() * tips.length, 10)
             client.channels.get(GENERAL_CHANNEL).send({
                 "embed": {
                     "title": "Tip",
                     "color": 16312092,
-                    "description": tips[parseInt(Math.random() * tips.length, 10)]
+                    "description": tips[pos]
                 }
             })
-        
+            tips.splice(pos, 1)            
             noSpamTip = 0
         }
         
