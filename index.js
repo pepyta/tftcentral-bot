@@ -339,7 +339,9 @@ client.on('messageReactionAdd', function (messageReaction, user) {
         }
     })
 
-    messageReaction.remove() // remove reaction so that it won't be weird if adds multiple
+    if(messageReaction.message.deletable){    
+        messageReaction.message.delete()
+    }
 
     if (!legend2) return // Fix possible bad emoji
     user.send(`Successfully selected **${legends[legend2.legendId].name} ${legends[legend2.legendId].emoji}**!`)
