@@ -86,6 +86,10 @@ function addLittleLegend(legendId, author) {
     if (has) {
         inv.forEach(function (elem) {
             if (elem.legendId == legendId) {
+                if(elem.level > 2){
+                    author.send("Ewh crap, you already have this little legend :/")
+                    return
+                }
                 elem.level++
                 if (elem.legendId == defaults.get(author.id, -1)) {
                     shouldUpdate = true
@@ -361,7 +365,6 @@ client.on('ready', () => {
 var lastGm
 setInterval(function () {
     var d = new Date()
-    console.log(d.getHours())
     if (d.getHours() == 7 && (!lastGm || lastGm.getDate() != d.getDate())) {
         client.channels.get("642469846155788288").send(`Good morning everyone! ☕`)
         lastGm = d
@@ -371,9 +374,6 @@ setInterval(function () {
 var tips = require('./tips')
 var noSpamTip = 0
 client.on('message', function(msg){
-    if(tips.length == 0){
-        tips = require('./tips')
-    }
     if(msg.channel.id == GENERAL_CHANNEL){
         noSpamTip++
         if(noSpamTip > 20){
@@ -384,8 +384,7 @@ client.on('message', function(msg){
                     "color": 16312092,
                     "description": tips[pos]
                 }
-            })
-            tips.splice(pos, 1)            
+            })       
             noSpamTip = 0
         }
         
