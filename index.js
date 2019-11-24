@@ -42,7 +42,7 @@ client.on('message', function (msg) {
             inv.forEach(function (elem) {
                 if (elem.level == 3) {
                     for (var i = 0; i < pool.length; i++) {
-                        if (i == elem.legendId) {
+                        if (pool[i] == elem.legendId) {
                             pool.splice(i, 1)
                         }
                     }
