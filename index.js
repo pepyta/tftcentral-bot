@@ -38,6 +38,16 @@ client.on('message', function (msg) {
                 pool.push(i)
             }
 
+            // only in December add winter emojis
+            var d = new Date()
+            if(d.getMonth() != 11){
+                for(var i = 0; i < legends.length; i++){
+                    if(legends[i] >= 8 && legends[i] <= 11){
+                        legends.splice(i, 1)
+                    }
+                }
+            }
+
             var inv = inventory.get(msg.author.id, [])
             inv.forEach(function (elem) {
                 if (elem.level == 3) {
