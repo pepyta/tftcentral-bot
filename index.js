@@ -42,7 +42,7 @@ client.on('message', function (msg) {
             var d = new Date()
             if(d.getMonth() != 11){
                 for(var i = 0; i < legends.length; i++){
-                    if(legends[i] >= 8 && legends[i] <= 11){
+                    if(legends[i] >= 8 && legends[i] <= 10){
                         legends.splice(i, 1)
                     }
                 }
