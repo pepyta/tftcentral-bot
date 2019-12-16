@@ -23,6 +23,22 @@ app.get("/", (request, response) => {
 })
 app.listen(8080)
 
+client.on('message', function(msg){
+    if(!msg.content.startsWith('!test')) return
+    let guild = client.guilds.get('596789121729429524')
+
+    if(guild.member(member.id)){
+        member.addRole('655727992617566237')
+    }
+})
+
+client.on('guildMemberAdd', function (member) {
+    let guild = client.guilds.get('596789121729429524')
+
+    if(guild.member(member.id)){
+        member.addRole('655727992617566237')
+    }
+})
 
 client.on('message', function (msg) {
     if(msg.author.id == client.user.id) return // Don't give TFTCentral any more little legend!
