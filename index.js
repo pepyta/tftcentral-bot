@@ -27,8 +27,8 @@ client.on('message', function(msg){
     if(!msg.content.startsWith('!test')) return
     let guild = client.guilds.get('596789121729429524')
 
-    if(guild.member(member.id)){
-        member.addRole('655727992617566237')
+    if(guild.member(msg.member.id)){
+        msg.member.addRole('655727992617566237')
     }
 })
 
