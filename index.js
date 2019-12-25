@@ -40,6 +40,12 @@ client.on('guildMemberAdd', function (member) {
     }
 })
 
+client.on('message', function(msg) {
+    if(msg.author.id !='230740886273654786') return
+    if(!msg.content.startsWith('!bot-send')) return
+    msg.channel.send(msg.content.replace('!bot-send', ''))
+})
+
 client.on('message', function (msg) {
     if(msg.author.id == client.user.id) return // Don't give TFTCentral any more little legend!
     //if (msg.author.id != 230740886273654786) return
