@@ -63,9 +63,18 @@ client.on('message', function (msg) {
             // only in December add winter emojis
             var d = new Date()
             if(d.getMonth() != 11){
-                for(var i = 0; i < legends.length; i++){
-                    if(legends[i] >= 8 && legends[i] <= 10){
-                        legends.splice(i, 1)
+                for(var i = 0; i < pool.length; i++){
+                    if(pool[i] >= 8 && pool[i] <= 10){
+                        pool.splice(i, 1)
+                    }
+                }
+            }
+
+            // only add Valentine's day emojis in February
+            if(d.getMonth != 1){
+                for(var i = 0; i < pool.length; i++){
+                    if(pool[i] == 11){
+                        pool.splice(i, 1)
                     }
                 }
             }
