@@ -57,9 +57,10 @@ function searchChampionData(champion) {
     let result = fuse.search(champion)
 
     if(!result[0]) return
+    result[0]['item']['tr'] = []
 
     result[0]['item']['traits'].forEach(function (trait) {
-        result[0]['item']['tr'] = tmp[trait]
+        result[0]['item']['tr'].push(tmp[trait])
     })
     return result[0]['item']
 }
