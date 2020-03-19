@@ -11,19 +11,20 @@ module.exports = {
     generateEmbed: function (championName) {
         var data = searchChampionData(championName)
 
-        var fields = []
+        var fields = ""
 
         data['tr'].forEach(function (trait) {
-            fields.push({
+            fields += `\n\n**${trait['name']}**\n${`${trait['innate'] ? `*Innate:* ${trait['innate']}\n*Description*: ` : ""}${trait['description']}`}`
+            /*fields.push({
                 name: trait['name'],
                 value: `${trait['innate'] ? `*Innate:* ${trait['innate']}\n*Description*: ` : ""}${trait['description']}`
-            })
+            })*/
         })
 
         return {
             "embed": {
                 "color": 5573598,
-                "description": "**Cost:** "+data['cost'],
+                "description": "**Cost:** "+data['cost']+fields,
                 "footer": {
                     "icon_url": "https://www.escharts.com/storage/app/uploads/public/5d2/355/0d1/5d23550d15183441256444.png",
                     "text": "Set 3"
@@ -33,8 +34,7 @@ module.exports = {
                 },
                 "author": {
                     "name": data['name']
-                },
-                "fields": fields
+                }
             }
         }
     }
