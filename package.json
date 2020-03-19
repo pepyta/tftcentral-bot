@@ -25,6 +25,7 @@
     "data-store": "^4.0.3",
     "discord.js": "^11.5.1",
     "emoji-strip": "^1.0.1",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "fuse.js": "^5.0.7-beta"
   }
 }
