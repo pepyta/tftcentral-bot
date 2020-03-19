@@ -1,6 +1,7 @@
 const champions = require('../dataset/champions.json')
 const traits = require('../dataset/traits.json')
 const Fuse = require('fuse.js')
+var Vibrant = require('node-vibrant')
 
 var tmp = {}
 traits.forEach(function (elem) {
@@ -9,34 +10,40 @@ traits.forEach(function (elem) {
 
 module.exports = {
     generateEmbed: function (championName) {
-        var data = searchChampionData(championName)
+        return new Promise(function (resolve, reject) {
 
-        var fields = ""
+            var data = searchChampionData(championName)
 
-        data['tr'].forEach(function (trait) {
-            fields += `\n\n**${trait['name']}**\n${`${trait['innate'] ? `*Innate:* ${trait['innate']}\n*Description*: ` : ""}${trait['description']}`}`
-            /*fields.push({
-                name: trait['name'],
-                value: `${trait['innate'] ? `*Innate:* ${trait['innate']}\n*Description*: ` : ""}${trait['description']}`
-            })*/
+            var fields = ""
+
+            data['tr'].forEach(function (trait) {
+                fields += `\n\n**${trait['name']}**\n${`${trait['innate'] ? `*Innate:* ${trait['innate']}\n*Description*: ` : ""}${trait['description']}`}`
+                /*fields.push({
+                    name: trait['name'],
+                    value: `${trait['innate'] ? `*Innate:* ${trait['innate']}\n*Description*: ` : ""}${trait['description']}`
+                })*/
+            })
+
+
+            Vibrant.from("https://raw.githubusercontent.com/pepyta/tftcentral-bot/master/dataset/champions/" + data['name'].split(" ").join("").toLowerCase() + ".png").getPalette().then(function (palette) {
+                resolve({
+                    "embed": {
+                        "color": parseInt(palette['LightVibrant'].hex.substring(1, 7), 16),
+                        "description": "**Cost:** " + data['cost'] + fields,
+                        "footer": {
+                            "icon_url": "https://www.escharts.com/storage/app/uploads/public/5d2/355/0d1/5d23550d15183441256444.png",
+                            "text": "Set 3"
+                        },
+                        "thumbnail": {
+                            "url": "https://raw.githubusercontent.com/pepyta/tftcentral-bot/master/dataset/champions/" + data['name'].split(" ").join("").toLowerCase() + ".png"
+                        },
+                        "author": {
+                            "name": data['name']
+                        }
+                    }
+                })
+            })
         })
-
-        return {
-            "embed": {
-                "color": 5573598,
-                "description": "**Cost:** "+data['cost']+fields,
-                "footer": {
-                    "icon_url": "https://www.escharts.com/storage/app/uploads/public/5d2/355/0d1/5d23550d15183441256444.png",
-                    "text": "Set 3"
-                },
-                "thumbnail": {
-                    "url": "https://raw.githubusercontent.com/pepyta/tftcentral-bot/master/dataset/champions/"+ data['name'].split(" ").join("").toLowerCase() +".png"
-                },
-                "author": {
-                    "name": data['name']
-                }
-            }
-        }
     }
 }
 
@@ -56,7 +63,7 @@ function searchChampionData(champion) {
     let fuse = new Fuse(champions, options)
     let result = fuse.search(champion)
 
-    if(!result[0]) return
+    if (!result[0]) return
     result[0]['item']['tr'] = []
 
     result[0]['item']['traits'].forEach(function (trait) {

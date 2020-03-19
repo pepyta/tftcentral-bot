@@ -36,10 +36,10 @@ client.on('message', function(msg){
 
 client.on('message', function(msg){
     if(!msg.content.includes('{') || !msg.content.includes('}')) return
-    var embed = champions.generateEmbed(msg.content.substring(msg.content.indexOf('{')+1, msg.content.indexOf('}')))
-    
-    if(!embed) return
-    msg.channel.send(embed)
+    champions.generateEmbed(msg.content.substring(msg.content.indexOf('{')+1, msg.content.indexOf('}'))).then(function(result){
+        if(!result) return
+        msg.channel.send(result)
+    })
 })
 
 client.on('guildMemberAdd', function (member) {
