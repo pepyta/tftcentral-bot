@@ -9,6 +9,8 @@ const defaults = require('data-store')({ path: 'defaults.json' })
 const messageCounter = require('data-store')({ path: 'messageCounter.json' })
 const legends = require('./legends')
 
+const champions = require('./modules/champions')
+
 const emojiStrip = require('emoji-strip')
 
 const SERVER_ID = '642389197239353354'
@@ -30,6 +32,14 @@ client.on('message', function(msg){
     if(guild.member(msg.member.id)){
         msg.member.addRole('655727992617566237')
     }
+})
+
+client.on('message', function(msg){
+    if(!msg.content.includes('{') || !msg.content.includes('}')) return
+    var embed = champions.generateEmbed(msg.content.substring(msg.content.indexOf('{')+1, msg.content.indexOf('}')))
+    
+    if(!embed) return
+    msg.channel.send(embed)
 })
 
 client.on('guildMemberAdd', function (member) {
