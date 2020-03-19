@@ -68,5 +68,35 @@ module.exports = [
         "name": "Runespirit",
         "emoji": "👾",
         "role": "677172335798648833"
+    },
+    {
+        "name": "Tocker",
+        "emoji": "🐦",
+        "role": "690324525229146332"
+    },
+    {
+        "name": "Starmaw",
+        "emoji": "🐋",
+        "role": "690324862107123953"
+    },
+    {
+        "name": "Squink",
+        "emoji": "🦑",
+        "role": "690324858227523604"
+    },
+    {
+        "name": "Flutterbug",
+        "emoji": "🐞",
+        "role": "690325293122322890"
+    },
+    {
+        "name": "Craggle",
+        "emoji": "🗿",
+        "role": "690325505463156807"
+    },
+    {
+        "name": "Abyssia",
+        "emoji": "🐜",
+        "role": "690325866768629761"
     }
 ]
