@@ -17,11 +17,8 @@ module.exports = {
             var fields = ""
 
             data['tr'].forEach(function (trait) {
+                if(!trait) return
                 fields += `\n\n**${trait['name']}**\n${`${trait['innate'] ? `*Innate:* ${trait['innate']}\n*Description*: ` : ""}${trait['description']}`}`
-                /*fields.push({
-                    name: trait['name'],
-                    value: `${trait['innate'] ? `*Innate:* ${trait['innate']}\n*Description*: ` : ""}${trait['description']}`
-                })*/
             })
 
 
