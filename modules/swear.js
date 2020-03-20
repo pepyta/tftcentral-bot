@@ -1,4 +1,4 @@
-const filter = [
+const list = [
     "fuck",
     "cunt",
     "hoe",
@@ -16,8 +16,8 @@ const file = require('data-store')({ path: 'moderation.json' })
 
 module.exports = {
     filter: function (msg) {
-        filter.forEach(function (elem) {
-            if (msg.match(filter)) {
+        list.forEach(function (elem) {
+            if (msg.match(elem)) {
                 return true;
             }
         })
