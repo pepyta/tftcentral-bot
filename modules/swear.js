@@ -16,12 +16,14 @@ const file = require('data-store')({ path: 'moderation.json' })
 
 module.exports = {
     filter: function (msg) {
+        var found = false;
         list.forEach(function (elem) {
             if (msg.match(elem)) {
-                return true;
+                found = true
+                return
             }
         })
-        return false;
+        return found;
     },
     generateEmbed: function (authorId) {
         file.set(authorId, file.get(authorId, 0)++)
