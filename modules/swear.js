@@ -26,7 +26,7 @@ module.exports = {
         return found;
     },
     generateEmbed: function (authorId) {
-        file.set(authorId, file.get(authorId, 0)++)
+        file.set(authorId, file.get(authorId, 0) + 1)
 
         return {
             "embed": {
