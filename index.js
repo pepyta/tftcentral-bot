@@ -10,7 +10,7 @@ const messageCounter = require('data-store')({ path: 'messageCounter.json' })
 const legends = require('./legends')
 
 const champions = require('./modules/champions')
-
+const swear = require('./modules/swear')
 const emojiStrip = require('emoji-strip')
 
 const SERVER_ID = '642389197239353354'
@@ -31,6 +31,27 @@ client.on('message', function(msg){
 
     if(guild.member(msg.member.id)){
         msg.member.addRole('655727992617566237')
+    }
+})
+
+client.on('message', function(msg){
+    if(!swear.filter(msg.content)) return;
+
+    msg.channel.send(swear.generateEmbed(msg.author.id)).then((msg2) => {
+        setTimeout(() => {
+            if(!msg2.deletable) return
+            msg2.delete()
+        }, 10000);
+
+        if(swear.checkIfBanNeeded(msg.author.id)){
+            msg.member.ban({
+                reason: "Anti-swear systam autoban"
+            })
+        }
+    })
+
+    if(msg.deletable){
+        msg.delete()
     }
 })
 

@@ -27,6 +27,7 @@
     "emoji-strip": "^1.0.1",
     "express": "^4.17.1",
     "fuse.js": "^5.0.7-beta",
+    "node-tft": "^0.2.0",
     "node-vibrant": "^3.1.5"
   }
 }
