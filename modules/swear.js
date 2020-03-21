@@ -1,15 +1,15 @@
-const list = [
-    "fuck",
-    "cunt",
-    "hoe",
-    "nigger",
-    "nigga",
-    "ass",
-    "bitch",
-    "shit",
-    "whore",
-    "crap"
-]
+const list = {
+    "fuck": true,
+    "cunt": true,
+    "hoe": true,
+    "nigger": true,
+    "nigga": true,
+    "ass": true,
+    "bitch": true,
+    "shit": true,
+    "whore": true,
+    "crap": true
+}
 
 const max = 5
 const file = require('data-store')({ path: 'moderation.json' })
@@ -17,10 +17,12 @@ const file = require('data-store')({ path: 'moderation.json' })
 module.exports = {
     filter: function (msg) {
         var found = false;
-        list.forEach(function (elem) {
-            if (msg.match(elem)) {
-                found = true
-                return
+
+        const words = str.split(/[.,\/ -?!()]/)
+        words.forEach(function(word){
+            if(list[word]){
+                found = true;
+                return;
             }
         })
         return found;
