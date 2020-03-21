@@ -18,7 +18,7 @@ module.exports = {
     filter: function (msg) {
         var found = false;
 
-        const words = str.split(/[.,\/ -?!()]/)
+        const words = msg.split(/[.,\/ -?!()]/)
         words.forEach(function(word){
             if(list[word]){
                 found = true;
