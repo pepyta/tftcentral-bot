@@ -99,7 +99,7 @@ client.on('message', function(msg){
     member.addRole('644284912865771541')
 })
 
-client.guilds.get(SERVER_ID).members.forEach(function(member){
+client.guilds.get('596789121729429524').members.forEach(function(member){
     var inv = inventory.get(member.id, [])
     if(inv != [] && inv){
         var pool = generatePool(member)
