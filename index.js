@@ -91,7 +91,7 @@ client.on('message', function (msg) {
 client.on('message', function(msg){
     if(!msg.content.startsWith('!joinTest')) return
     var member = msg.member
-    var legendId = generatePool()[parseInt(Math.random() * pool.length, 10)]
+    var legendId = generatePool(member)[parseInt(Math.random() * pool.length, 10)]
 
     member.user.send(`Hello ${member.displayName}!\n\nWelcome to the **TFTCentral**'s official Discord server! I'm the server's bot or some would say little helper. I will guide you through the server's mysteries. First of all you should read everything in the #welcome channel. You will have time for it as you will have to wait 90 seconds until you can reach the other channels. We have dedicated channels for dedicated purposes. Their names are pretty meaningful, but if you have any questions just ask some of the moderators or admins.\n\nFirst everyone is getting a free little legend when they join the server.\nYour first little legends is a **${legends[legendId].name}**!\nGotcha! It's a nice catch, congratulations!\n\nI hope you will have a nice day!\nGLHF summoner!`)
     addLittleLegend(legendId, member.user)
@@ -99,14 +99,14 @@ client.on('message', function(msg){
 })
 
 client.on('guildMemberAdd', function (member) {
-    var legendId = generatePool()[parseInt(Math.random() * pool.length, 10)]
+    var legendId = generatePool(member)[parseInt(Math.random() * pool.length, 10)]
 
     member.user.send(`Hello ${member.displayName}!\n\nWelcome to the **TFTCentral**'s official Discord server! I'm the server's bot or some would say little helper. I will guide you through the server's mysteries. First of all you should read everything in the #welcome channel. You will have time for it as you will have to wait 90 seconds until you can reach the other channels. We have dedicated channels for dedicated purposes. Their names are pretty meaningful, but if you have any questions just ask some of the moderators or admins.\n\nFirst everyone is getting a free little legend when they join the server.\nYour first little legends is a **${legends[legendId].name}**!\nGotcha! It's a nice catch, congratulations!\n\nI hope you will have a nice day!\nGLHF summoner!`)
     addLittleLegend(legendId, member.user)
     member.addRole('644284912865771541')
 })
 
-function generatePool() {
+function generatePool(user) {
     // Only generate little legend for less hen 3 star units
     var pool = []
     for (var i = 0; i < legends.length; i++) {
@@ -132,7 +132,7 @@ function generatePool() {
         }
     }
 
-    var inv = inventory.get(msg.author.id, [])
+    var inv = inventory.get(user.id, [])
     inv.forEach(function (elem) {
         if (elem.level == 3) {
             for (var i = 0; i < pool.length; i++) {
@@ -153,7 +153,7 @@ client.on('message', function (msg) {
     if (value) {
         value--
         if (value == 0) {
-            var pool = generatePool()
+            var pool = generatePool(msg.author)
 
             if (pool.length == 0) return // Don't generate more little legend when you have them all already
             var legendId = pool[parseInt(Math.random() * pool.length, 10)]
