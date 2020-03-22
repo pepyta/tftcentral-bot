@@ -25,101 +25,135 @@ app.get("/", (request, response) => {
 })
 app.listen(8080)
 
-client.on('message', function(msg){
-    if(!msg.content.startsWith('!test')) return
+client.on('message', function (msg) {
+    if (!msg.content.startsWith('!test')) return
     let guild = client.guilds.get('596789121729429524')
 
-    if(guild.member(msg.member.id)){
+    if (guild.member(msg.member.id)) {
         msg.member.addRole('655727992617566237')
     }
 })
 
-client.on('message', function(msg){
-    if(!swear.filter(msg.content)) return;
+
+/*
+Anti-swear system autoban
+*/
+client.on('message', function (msg) {
+    if (!swear.filter(msg.content)) return;
 
     msg.channel.send(swear.generateEmbed(msg.author.id)).then((msg2) => {
         setTimeout(() => {
-            if(!msg2.deletable) return
+            if (!msg2.deletable) return
             msg2.delete()
         }, 10000);
 
-        if(swear.checkIfBanNeeded(msg.author.id)){
+        if (swear.checkIfBanNeeded(msg.author.id)) {
             msg.member.ban({
-                reason: "Anti-swear systam autoban"
+                reason: "Anti-swear system autoban"
             })
         }
     })
 
-    if(msg.deletable){
+    if (msg.deletable) {
         msg.delete()
     }
 })
 
-client.on('message', function(msg){
-    if(!msg.content.includes('{') || !msg.content.includes('}')) return
-    champions.generateEmbed(msg.content.substring(msg.content.indexOf('{')+1, msg.content.indexOf('}'))).then(function(result){
-        if(!result) return
+
+/*
+    Send TFT champions in chat 
+*/
+client.on('message', function (msg) {
+    if (!msg.content.includes('{') || !msg.content.includes('}')) return
+    champions.generateEmbed(msg.content.substring(msg.content.indexOf('{') + 1, msg.content.indexOf('}'))).then(function (result) {
+        if (!result) return
         msg.channel.send(result)
     })
 })
 
+/*
+    Tacter role
+*/
 client.on('guildMemberAdd', function (member) {
     let guild = client.guilds.get('596789121729429524')
 
-    if(guild.member(member.id)){
+    if (guild.member(member.id)) {
         member.addRole('655727992617566237')
     }
 })
 
-client.on('message', function(msg) {
-    if(msg.author.id !='230740886273654786') return
-    if(!msg.content.startsWith('!bot-send')) return
+client.on('message', function (msg) {
+    if (msg.author.id != '230740886273654786') return
+    if (!msg.content.startsWith('!bot-send')) return
     msg.channel.send(msg.content.replace('!bot-send', ''))
 })
 
+client.on('message', function(msg){
+    if(!msg.content.startsWith('!joinTest')) return
+    var member = msg.member
+    var legendId = generatePool()[parseInt(Math.random() * pool.length, 10)]
+
+    member.user.send(`Hello ${member.displayName}!\n\nWelcome to the **TFTCentral**'s official Discord server! I'm the server's bot or some would say little helper. I will guide you through the server's mysteries. First of all you should read everything in the #welcome channel. You will have time for it as you will have to wait 90 seconds until you can reach the other channels. We have dedicated channels for dedicated purposes. Their names are pretty meaningful, but if you have any questions just ask some of the moderators or admins.\n\nFirst everyone is getting a free little legend when they join the server.\nYour first little legends is a **${legends[legendId].name}**!\nGotcha! It's a nice catch, congratulations!\n\nI hope you will have a nice day!\nGLHF summoner!`)
+    addLittleLegend(legendId, member.user)
+    member.addRole('644284912865771541')
+})
+
+client.on('guildMemberAdd', function (member) {
+    var legendId = generatePool()[parseInt(Math.random() * pool.length, 10)]
+
+    member.user.send(`Hello ${member.displayName}!\n\nWelcome to the **TFTCentral**'s official Discord server! I'm the server's bot or some would say little helper. I will guide you through the server's mysteries. First of all you should read everything in the #welcome channel. You will have time for it as you will have to wait 90 seconds until you can reach the other channels. We have dedicated channels for dedicated purposes. Their names are pretty meaningful, but if you have any questions just ask some of the moderators or admins.\n\nFirst everyone is getting a free little legend when they join the server.\nYour first little legends is a **${legends[legendId].name}**!\nGotcha! It's a nice catch, congratulations!\n\nI hope you will have a nice day!\nGLHF summoner!`)
+    addLittleLegend(legendId, member.user)
+    member.addRole('644284912865771541')
+})
+
+function generatePool() {
+    // Only generate little legend for less hen 3 star units
+    var pool = []
+    for (var i = 0; i < legends.length; i++) {
+        pool.push(i)
+    }
+
+    // only in December add winter emojis
+    var d = new Date()
+    if (d.getMonth() != 11) {
+        for (var i = 0; i < pool.length; i++) {
+            if (pool[i] >= 8 && pool[i] <= 10) {
+                pool.splice(i, 1)
+            }
+        }
+    }
+
+    // only add Valentine's day emojis in February
+    if (d.getMonth != 1) {
+        for (var i = 0; i < pool.length; i++) {
+            if (pool[i] == 11) {
+                pool.splice(i, 1)
+            }
+        }
+    }
+
+    var inv = inventory.get(msg.author.id, [])
+    inv.forEach(function (elem) {
+        if (elem.level == 3) {
+            for (var i = 0; i < pool.length; i++) {
+                if (pool[i] == elem.legendId) {
+                    pool.splice(i, 1)
+                }
+            }
+        }
+    })
+
+    return pool
+}
+
 client.on('message', function (msg) {
-    if(msg.author.id == client.user.id) return // Don't give TFTCentral any more little legend!
+    if (msg.author.id == client.user.id) return // Don't give TFTCentral any more little legend!
     //if (msg.author.id != 230740886273654786) return
     var value = messageCounter.get(msg.author.id, undefined)
     if (value) {
         value--
         if (value == 0) {
-            //var legendId = parseInt(Math.random() * legends.length, 10)
-            // Only generate little legend for less hen 3 star units
-            var pool = []
-            for (var i = 0; i < legends.length; i++) {
-                pool.push(i)
-            }
-
-            // only in December add winter emojis
-            var d = new Date()
-            if(d.getMonth() != 11){
-                for(var i = 0; i < pool.length; i++){
-                    if(pool[i] >= 8 && pool[i] <= 10){
-                        pool.splice(i, 1)
-                    }
-                }
-            }
-
-            // only add Valentine's day emojis in February
-            if(d.getMonth != 1){
-                for(var i = 0; i < pool.length; i++){
-                    if(pool[i] == 11){
-                        pool.splice(i, 1)
-                    }
-                }
-            }
-
-            var inv = inventory.get(msg.author.id, [])
-            inv.forEach(function (elem) {
-                if (elem.level == 3) {
-                    for (var i = 0; i < pool.length; i++) {
-                        if (pool[i] == elem.legendId) {
-                            pool.splice(i, 1)
-                        }
-                    }
-                }
-            })
+            var pool = generatePool()
 
             if (pool.length == 0) return // Don't generate more little legend when you have them all already
             var legendId = pool[parseInt(Math.random() * pool.length, 10)]
@@ -158,7 +192,7 @@ function addLittleLegend(legendId, author) {
     if (has) {
         inv.forEach(function (elem) {
             if (elem.legendId == legendId) {
-                if(elem.level > 2){
+                if (elem.level > 2) {
                     author.send("Ewh crap, you already have this little legend :/")
                     return
                 }
@@ -234,7 +268,7 @@ function setDefault(userId, legendId) {
 function assignLittleLegendRole(currentUser, legends, legendId, pickedLittleLegend) {
     return new Promise(function (resolve, reject) {
         if (legendId < legends.length) {
-            if(currentUser.roles.has(legends[legendId].role)){
+            if (currentUser.roles.has(legends[legendId].role)) {
 
                 currentUser.removeRole(legends[legendId].role).then(function () {
                     assignLittleLegendRole(currentUser, legends, legendId + 1, pickedLittleLegend).then(function () {
@@ -262,19 +296,19 @@ function assignLittleLegendRole(currentUser, legends, legendId, pickedLittleLege
     })
 }
 
-client.on('message', function(msg){
-    if(!msg.content.startsWith("!ranklist")) return
+client.on('message', function (msg) {
+    if (!msg.content.startsWith("!ranklist")) return
     const allInv = inventory.get()
 
     var ranks = []
     console.log(allInv)
-    Object.keys(allInv).forEach(function(key){
-        if(key != client.user.id && key != 520994932828143639){
+    Object.keys(allInv).forEach(function (key) {
+        if (key != client.user.id && key != 520994932828143639) {
             var sum = 0
-            allInv[key].forEach(function(legend){
+            allInv[key].forEach(function (legend) {
                 sum += legend.level
             })
-    
+
             ranks.push({
                 id: key,
                 value: sum
@@ -282,15 +316,15 @@ client.on('message', function(msg){
         }
     })
 
-    ranks.sort(function(a, b){
+    ranks.sort(function (a, b) {
         return b.value - a.value
     })
 
-    if(msg.deletable){
+    if (msg.deletable) {
         msg.delete()
     }
     msg.channel.send({
-        embed:{
+        embed: {
             title: "Ranklist",
             description: `🥇 **${client.guilds.get(SERVER_ID).members.get(ranks[0].id).displayName}** (${ranks[0].value} little legends)\n
             🥈 **${client.guilds.get(SERVER_ID).members.get(ranks[1].id).displayName}** (${ranks[1].value} little legends)\n
@@ -406,7 +440,7 @@ client.on('message', function (msg) {
 client.on('messageReactionAdd', function (messageReaction, user) {
     var inv = inventory.get(user.id, [])
     if (client.user.id == user.id) return
-    if(messageReaction.message.author.id != client.user.id) return
+    if (messageReaction.message.author.id != client.user.id) return
     var legend2
     inv.forEach(function (legend) {
         if (legends[legend.legendId].emoji == messageReaction.emoji.name) {
@@ -415,7 +449,7 @@ client.on('messageReactionAdd', function (messageReaction, user) {
         }
     })
 
-    if(messageReaction.message.deletable){    
+    if (messageReaction.message.deletable) {
         messageReaction.message.delete()
     }
 
@@ -445,10 +479,10 @@ setInterval(function () {
 
 var tips = require('./tips')
 var noSpamTip = 0
-client.on('message', function(msg){
-    if(msg.channel.id == GENERAL_CHANNEL){
+client.on('message', function (msg) {
+    if (msg.channel.id == GENERAL_CHANNEL) {
         noSpamTip++
-        if(noSpamTip > 20){
+        if (noSpamTip > 20) {
             var pos = parseInt(Math.random() * tips.length, 10)
             client.channels.get(GENERAL_CHANNEL).send({
                 "embed": {
@@ -456,10 +490,10 @@ client.on('message', function(msg){
                     "color": 16312092,
                     "description": tips[pos]
                 }
-            })       
+            })
             noSpamTip = 0
         }
-        
+
     }
 })
 
