@@ -450,18 +450,6 @@ client.on('messageReactionAdd', function (messageReaction, user) {
 })
 
 client.on('ready', () => {
-    client.guilds.get(SERVER_ID).members.forEach(function(member){
-        var inv = inventory.get(member.id, [])
-        if(inv != [] && inv){
-            var pool = generatePool(member)
-            var legendId = pool[parseInt(Math.random() * pool.length, 10)]
-
-            //member.user.send(`Hello ${member.displayName}!\n\nWelcome to the **TFTCentral**'s official Discord server! I'm the server's bot or some would say little helper. I will guide you through the server's mysteries. First of all you should read everything in the #welcome channel. You will have time for it as you will have to wait 90 seconds until you can reach the other channels. We have dedicated channels for dedicated purposes. Their names are pretty meaningful, but if you have any questions just ask some of the moderators or admins.\n\nFirst everyone is getting a free little legend when they join the server.\nYour first little legends is a **${legends[legendId].name}**!\nGotcha! It's a nice catch, congratulations!\n\nI hope you will have a nice day!\nGLHF summoner!`)
-            addLittleLegend(legendId, member.user)
-            member.addRole('644284912865771541')
-        }
-    })
-    
     client.user.setStatus('available')
     client.user.setPresence({
         game: {
