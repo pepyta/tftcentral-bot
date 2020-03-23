@@ -63,3 +63,4 @@ typings/
 inventory.json
 messageCounter.json
 defaults.json
+test.js
