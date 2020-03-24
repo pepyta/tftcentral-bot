@@ -66,6 +66,7 @@ client.on('message', function (msg) {
 client.on('message', function (msg) {
     if (!msg.content.includes('{') || !msg.content.includes('}')) return
 
+    var counter = 0
     var message = msg.content
     while(lookForNewChamp(message)){
         
@@ -78,7 +79,8 @@ client.on('message', function (msg) {
     }
 
     function lookForNewChamp(message){
-        return message.includes('{') && message.includes('}')
+        counter++
+        return message.includes('{') && message.includes('}') && counter < 4
     }
 })
 
