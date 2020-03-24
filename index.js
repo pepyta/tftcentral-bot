@@ -65,10 +65,21 @@ client.on('message', function (msg) {
 */
 client.on('message', function (msg) {
     if (!msg.content.includes('{') || !msg.content.includes('}')) return
-    champions.generateEmbed(msg.content.substring(msg.content.indexOf('{') + 1, msg.content.indexOf('}'))).then(function (result) {
-        if (!result) return
-        msg.channel.send(result)
-    })
+
+    var message = msg.content
+    while(lookForNewChamp(message)){
+        
+        champions.generateEmbed(message.substring(message.indexOf('{') + 1, message.indexOf('}'))).then(function (result) {
+            if (!result) return
+            msg.channel.send(result)
+        })
+
+        message = message.substring(message.indexOf('}')+1)
+    }
+
+    function lookForNewChamp(message){
+        return message.includes('{') && message.includes('}')
+    }
 })
 
 /*
